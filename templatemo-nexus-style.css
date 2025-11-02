@@ -1547,7 +1547,7 @@ https://templatemo.com/tm-594-nexus-flow
         .pricing-card.featured::before {
             content: 'MOST POPULAR';
             position: absolute;
-            top: -15px;
+            top: -5px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
@@ -1557,6 +1557,34 @@ https://templatemo.com/tm-594-nexus-flow
             font-weight: 700;
             letter-spacing: 2px;
             clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+            z-index: 10;
+        }
+
+        .pricing-card.customer-favorite {
+            border-color: var(--primary-purple);
+            background: rgba(124, 58, 237, 0.05);
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(124, 58, 237, 0.3);
+        }
+
+        .pricing-card.customer-favorite::before {
+            content: 'CUSTOMER FAVORITE';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
+            color: var(--darker-bg);
+            padding: 0.5rem 2rem;
+            font-size: 0.8rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+            z-index: 10;
+        }
+
+        .pricing-card.customer-favorite:hover {
+            transform: scale(1.05) translateY(-10px);
         }
 
         .pricing-card:hover {
