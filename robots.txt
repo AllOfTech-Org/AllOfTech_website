@@ -26,7 +26,7 @@ User-agent: YandexBot
 Allow: /
 
 # Sitemap location
-Sitemap: https://alloftech-org.github.io/AllOfTech/sitemap.xml
+Sitemap: https://alloftech.site/sitemap.xml
 
 # Crawl-delay (optional, helps prevent server overload)
 Crawl-delay: 1
