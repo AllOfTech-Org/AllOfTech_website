@@ -926,6 +926,7 @@ https://templatemo.com/tm-594-nexus-flow
             .hero-title {
                 letter-spacing: 1px;
                 margin-bottom: 1rem;
+				white-space: nowrap;
             }
         }
 
@@ -957,12 +958,13 @@ https://templatemo.com/tm-594-nexus-flow
             word-break: break-word;
         }
         
-        @media (max-width: 480px) {
-            .hero-nexus, .hero-flow {
-                display: block;
-                margin: 0;
-            }
-        }
+		@media (max-width: 480px) {
+			.hero-nexus, .hero-flow {
+				display: inline-block;
+				margin: 0;
+				word-break: keep-all;
+			}
+		}
 
         @keyframes cyanPulse {
             0%, 100% { 
@@ -1954,14 +1956,16 @@ https://templatemo.com/tm-594-nexus-flow
             }
             
             .hero-title {
-                font-size: clamp(1.5rem, 10vw, 2rem);
-                padding: 0 0.5rem;
+				font-size: clamp(1.5rem, 10vw, 2rem);
+				padding: 0 0.5rem;
+				white-space: nowrap;
             }
             
-            .hero-nexus, .hero-flow {
-                display: block;
-                margin: 0;
-            }
+			.hero-nexus, .hero-flow {
+				display: inline-block;
+				margin: 0;
+				word-break: keep-all;
+			}
             
             .btn-primary, .btn-secondary {
                 max-width: 100%;
