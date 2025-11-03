@@ -1547,7 +1547,7 @@ https://templatemo.com/tm-594-nexus-flow
         .pricing-card.featured::before {
             content: 'MOST POPULAR';
             position: absolute;
-            top: -5px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
@@ -1575,10 +1575,10 @@ https://templatemo.com/tm-594-nexus-flow
             transform: translateX(-50%);
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
             color: var(--darker-bg);
-            padding: 0.5rem 2rem;
+            padding: 0.4rem 1.5rem;
             font-size: 0.8rem;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
             z-index: 10;
         }
