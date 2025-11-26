@@ -401,7 +401,7 @@ document.querySelectorAll('.feature-card').forEach(card => {
 });
 
 // Random cyber text effects
-const cyberTexts = ['CONNECTING...', 'NEURAL LINK ESTABLISHED', 'QUANTUM SYNC ACTIVE', 'REALITY MATRIX LOADED'];
+const cyberTexts = ['STARTING UP...', 'TURNING TECHNOLOGY INTO GROWTH', 'BUILD SMART. GROW FAST', 'Application Live'];
 
 setInterval(() => {
     const randomText = cyberTexts[Math.floor(Math.random() * cyberTexts.length)];
