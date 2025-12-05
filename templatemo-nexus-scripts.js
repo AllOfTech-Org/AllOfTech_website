@@ -141,7 +141,7 @@ if (document.readyState === 'loading') {
 // Generate Matrix Rain Effect
 function generateMatrixRain() {
     const matrixRain = document.getElementById('matrixRain');
-    const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const characters = 'A L L O F T E C H AI ML WEB DEV UX UI N8N DATA CLOUD CODE 0 1 {} <> [] () # @';
     const columns = Math.floor(window.innerWidth / 20);
     
     for (let i = 0; i < columns; i++) {
@@ -525,7 +525,7 @@ function generateModalBackground(serviceType) {
     
     if (matrixRain && matrixRain.children.length === 0) {
         // Generate modal matrix rain
-        const characters = 'A L L O F T E C H AI ML WEB DEV UX UI N8N DATA CLOUD CODE 0 1 {} <> [] () # @';;
+        const characters = 'A L L O F T E C H AI ML WEB DEV UX UI N8N DATA CLOUD CODE 0 1 {} <> [] () # @';
         const columns = Math.floor(modal.offsetWidth / 20);
         
         for (let i = 0; i < columns; i++) {
