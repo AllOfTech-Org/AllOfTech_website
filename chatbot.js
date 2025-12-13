@@ -10,7 +10,7 @@
     const chatbotInputContainer = document.getElementById('chatbotInputContainer');
     const chatbotStatus = document.getElementById('chatbotStatus');
     const API_URL = 'https://alloftech-website-chatbot-api.vercel.app/chat';
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_7iVFOZh41iT2ycjp_wiDphTwnt39NpcB2mEocvSd80VGJAhX1HweKG_gXaU6TLo8/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6mx1chaD0UyESeUU-xOYK2RYaduxF5LFy2290Gey7wqIyJLMlAZfxWe32cbLbJUyf/exec';
 
     // Login state management
     const LOGIN_STORAGE_KEY = 'alloftech_chatbot_logged_in';

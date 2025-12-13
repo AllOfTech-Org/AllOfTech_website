@@ -5,7 +5,7 @@
     'use strict';
 
     // ⚠️ YOUR GOOGLE APPS SCRIPT WEB APP URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_7iVFOZh41iT2ycjp_wiDphTwnt39NpcB2mEocvSd80VGJAhX1HweKG_gXaU6TLo8/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6mx1chaD0UyESeUU-xOYK2RYaduxF5LFy2290Gey7wqIyJLMlAZfxWe32cbLbJUyf/exec';
     
     // Configuration
     const TRACKING_CONFIG = {
