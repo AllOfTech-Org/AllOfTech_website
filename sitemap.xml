@@ -106,5 +106,36 @@
         <priority>0.7</priority>
     </url>
     
+    <!-- Comparison & Resource Pages -->
+    <url>
+        <loc>https://alloftech.site/tech-agency-comparison.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alloftech.site/resources/</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Additional Service Pages -->
+    <url>
+        <loc>https://alloftech.site/mobile-app-development.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Blog Posts -->
+    <url>
+        <loc>https://alloftech.site/blog/ai-agency-services-guide.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
 </urlset>
 
