@@ -52,5 +52,59 @@
         <priority>0.8</priority>
     </url>
     
+    <!-- FAQ Section -->
+    <url>
+        <loc>https://alloftech.site/#faq</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Case Studies Page -->
+    <url>
+        <loc>https://alloftech.site/case-studies.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Terms & Conditions -->
+    <url>
+        <loc>https://alloftech.site/terms-and-conditions.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Service Pages -->
+    <url>
+        <loc>https://alloftech.site/ai-ml-development.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://alloftech.site/web-development.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Blog Pages -->
+    <url>
+        <loc>https://alloftech.site/blog/</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alloftech.site/blog/how-to-choose-tech-agency.html</loc>
+        <lastmod>2025-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
 </urlset>
 
