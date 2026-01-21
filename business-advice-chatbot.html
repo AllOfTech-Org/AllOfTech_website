@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>Business Advice Chatbot | AllOfTech</title>
+  <meta name="description" content="Share your website link and business problem. Get business advice from our assistant." />
+  <meta name="theme-color" content="#1a0b2e" />
+
+  <link rel="icon" href="images/favicon.ico" />
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="icon" type="image/png" href="/images/new-Logo_tab.png" />
+
+  <!-- Site base styles (variables + background system) -->
+  <link href="templatemo-nexus-style.css" rel="stylesheet" />
+  <!-- Page-specific styles -->
+  <link href="business-advice-chatbot.css" rel="stylesheet" />
+</head>
+
+<body id="top">
+  <!-- Same background system as the main site -->
+  <div class="cyber-bg">
+    <div class="cyber-gradient"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
+  </div>
+  <div class="particles" id="particlesContainer"></div>
+  <div class="data-streams" id="dataStreams"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="grid-overlay">
+    <div class="grid-lines"></div>
+    <div class="grid-glow"></div>
+  </div>
+  <div class="scanlines"></div>
+  <div class="noise-overlay"></div>
+
+  <!-- Simple navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">AllOfTech</a>
+      <ul class="nav-links">
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="business-advice-chatbot.html" class="active">Business Advice Chatbot</a></li>
+      </ul>
+      <div class="nav-bottom">
+        <a href="index.html#contact" class="cyber-button">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="gig-page">
+    <section class="gig-hero">
+      <div class="gig-hero-inner">
+        <h1 class="gig-title">
+          <span class="gig-title-accent">Business</span> Advice Chatbot
+        </h1>
+        <p class="gig-subtitle">
+          Add your details once, then get business advice in chat. Your details are not shown inside the chat.
+        </p>
+      </div>
+    </section>
+
+    <section class="gig-shell" aria-label="Business Advice Chatbot">
+      <div class="gig-grid">
+        <!-- Intake -->
+        <aside class="gig-card gig-intake" aria-label="Business details form">
+          <div class="gig-card-header">
+            <h2>Business Details</h2>
+            <p>Saved for advice + tracking (not displayed in chat).</p>
+          </div>
+
+          <form id="gigIntakeForm" class="gig-form" autocomplete="on" novalidate>
+            <div class="gig-field">
+              <label for="businessName">Business Name</label>
+              <input id="businessName" name="businessName" type="text" placeholder="e.g. Apex Clothing" required />
+            </div>
+
+            <div class="gig-field">
+              <label for="ownerName">Owner Name</label>
+              <input id="ownerName" name="ownerName" type="text" placeholder="e.g. Sarah Khan" required />
+            </div>
+
+            <div class="gig-field">
+              <label for="websiteLink">Website Link</label>
+              <input id="websiteLink" name="websiteLink" type="url" placeholder="e.g. https://example.com" />
+              <small class="gig-hint">Optional, but helpful.</small>
+            </div>
+
+            <div class="gig-field">
+              <label for="problemText">Problem / Requirement</label>
+              <textarea id="problemText" name="problemText" rows="6" placeholder="Tell us what problem you’re facing…" required></textarea>
+            </div>
+
+            <div class="gig-actions">
+              <button type="submit" class="gig-primary-btn" id="gigStartBtn">
+                Start Advice Chat
+              </button>
+              <button type="button" class="gig-secondary-btn" id="gigResetBtn">
+                Reset
+              </button>
+            </div>
+
+            <div class="gig-error" id="gigFormError" role="alert" aria-live="polite"></div>
+          </form>
+        </aside>
+
+        <!-- Chat -->
+        <section class="gig-card gig-chat" aria-label="Chat area">
+          <div class="gig-chat-header">
+            <div class="gig-chat-title">
+              <div class="gig-avatar" aria-hidden="true">
+                <img src="images/new-Logo.png" alt="AllOfTech Logo" />
+              </div>
+              <div>
+                <h2>Business Advice Chatbot</h2>
+                <p class="gig-status" id="gigStatus">Waiting for your business details…</p>
+              </div>
+            </div>
+            <div class="gig-chat-badges">
+              <span class="gig-badge" id="gigBadgeMode">Mode: Advice</span>
+              <span class="gig-badge" id="gigBadgePrivacy">API</span>
+            </div>
+          </div>
+
+          <div class="gig-chat-body" id="gigMessages" aria-live="polite" aria-label="Chat messages">
+            <div class="gig-msg gig-msg-bot">
+              <div class="gig-msg-avatar">
+                <img src="images/new-Logo.png" alt="AllOfTech Logo" />
+              </div>
+              <div class="gig-msg-bubble">
+                <p>
+                  Please fill the business details on the left, then click “Start Advice Chat”.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gig-chat-input">
+            <input id="gigInput" type="text" placeholder="Type your message…" disabled />
+            <button id="gigSendBtn" class="gig-send-btn" disabled aria-label="Send message">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="gig-footer">
+      <div class="gig-footer-inner">
+        <p>
+          <a href="index.html">← Back to Home</a>
+          <span class="gig-footer-sep">•</span>
+          <a href="mailto:contact.alloftech@gmail.com">contact.alloftech@gmail.com</a>
+        </p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="templatemo-nexus-scripts.js"></script>
+  <script src="business-advice-chatbot.js"></script>
+</body>
+</html>
+
