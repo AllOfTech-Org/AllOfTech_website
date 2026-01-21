@@ -101,6 +101,47 @@
     return msg;
   }
 
+  function addTypewriterMessage(text) {
+    const msg = document.createElement('div');
+    msg.className = 'gig-msg gig-msg-bot';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'gig-msg-avatar';
+    const img = document.createElement('img');
+    img.src = 'images/new-Logo.png';
+    img.alt = 'AllOfTech Logo';
+    avatar.appendChild(img);
+
+    const bubble = document.createElement('div');
+    bubble.className = 'gig-msg-bubble';
+    const p = document.createElement('p');
+    bubble.appendChild(p);
+
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+
+    let i = 0;
+    const chars = text || '';
+    const interval = setInterval(() => {
+      if (i >= chars.length) {
+        clearInterval(interval);
+        return;
+      }
+      const ch = chars[i];
+      if (ch === '\n') {
+        p.appendChild(document.createElement('br'));
+      } else {
+        p.appendChild(document.createTextNode(ch));
+      }
+      i += 1;
+      scrollToBottom();
+    }, 12); // typing speed
+
+    return msg;
+  }
+
   function scrollToBottom() {
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -144,6 +185,7 @@
     if (!data) return '';
     if (typeof data === 'string') return data;
     return (
+      data.solution ||
       data.advice ||
       data.response ||
       data.message ||
@@ -287,7 +329,7 @@
     try {
       const reply = await fetchBusinessAdvice('');
       removeLoadingMessage();
-      addMessage(reply, 'bot');
+      addTypewriterMessage(reply);
       sendToGoogleSheets('business_advice_chat', {
         userMessage: '(auto initial advice)',
         botMessage: reply,
@@ -324,7 +366,7 @@
     try {
       const reply = await fetchBusinessAdvice(text);
       removeLoadingMessage();
-      addMessage(reply, 'bot');
+      addTypewriterMessage(reply);
 
       // Track chat turn (optional)
       sendToGoogleSheets('business_advice_chat', {
