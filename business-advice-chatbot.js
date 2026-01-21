@@ -15,7 +15,8 @@
 
   // Google Sheet endpoint (user will provide later)
   // Paste your Apps Script URL here when ready.
-  const GOOGLE_SCRIPT_URL = '';
+  const GOOGLE_SCRIPT_URL =
+    'https://script.google.com/macros/s/AKfycbxFp0du9hco6cb0FWTU_TzcldrW8o1N2l-gzmFYSJrpTjdc_ikeVuyEsC39OwvaXPoojA/exec';
 
   const intake = {
     businessName: '',
