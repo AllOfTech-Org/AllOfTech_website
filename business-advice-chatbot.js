@@ -11,12 +11,12 @@
   const sendBtn = document.getElementById('gigSendBtn');
 
   // Business Advice API
-  const API_URL = 'https://business-chatbot-advice-api.vercel.app/business-advice';
+  const API_URL = 'https://business-chatbot-advice-api.vercel.app/solution';
 
   // Google Sheet endpoint (user will provide later)
   // Paste your Apps Script URL here when ready.
   const GOOGLE_SCRIPT_URL =
-    'https://script.google.com/macros/s/AKfycbxFp0du9hco6cb0FWTU_TzcldrW8o1N2l-gzmFYSJrpTjdc_ikeVuyEsC39OwvaXPoojA/exec';
+    'https://script.google.com/macros/s/AKfycbwOFvZgNICdW3jW7kFHar62FKSt0f38y5qyQf3APD1DZITKIcD1ZB-Edh76nrZxkXLZ-w/exec';
 
   const intake = {
     businessName: '',
@@ -157,19 +157,19 @@
     const websiteUrl = normalizeWebsite(intake.websiteLink);
     const ownerProblemBase = (intake.problemText || '').trim();
 
-    let ownerProblem = ownerProblemBase;
-    if (!ownerProblem) {
-      ownerProblem = websiteUrl
+    let problemText = ownerProblemBase;
+    if (!problemText) {
+      problemText = websiteUrl
         ? `Please review this website and suggest business advice: ${websiteUrl}`
         : 'Please provide business advice based on my follow-up message.';
     }
     if (extraUserMessage) {
-      ownerProblem = `${ownerProblem}\n\nAdditional message: ${extraUserMessage}`;
+      problemText = `${problemText}\n\nAdditional message: ${extraUserMessage}`;
     }
 
     const payload = {
       website_url: websiteUrl,
-      owner_problem: ownerProblem,
+      problem_text: problemText,
     };
 
     const res = await fetch(API_URL, {
