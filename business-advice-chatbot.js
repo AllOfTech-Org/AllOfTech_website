@@ -74,6 +74,51 @@
     return div.innerHTML;
   }
 
+  function parseMarkdownSimple(text) {
+    let html = escapeHtml(text);
+
+    // links [text](url)
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    // bold **text**
+    html = html.replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
+    // italic *text*
+    html = html.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em>$1</em>');
+
+    // basic line breaks to paragraphs
+    const lines = html.split('\n');
+    const processed = [];
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) {
+        processed.push('<br>');
+      } else if (line.startsWith('### ')) {
+        processed.push('<h3>' + line.substring(4) + '</h3>');
+      } else if (line.startsWith('## ')) {
+        processed.push('<h2>' + line.substring(3) + '</h2>');
+      } else if (line.startsWith('# ')) {
+        processed.push('<h1>' + line.substring(2) + '</h1>');
+      } else {
+        processed.push('<p>' + line + '</p>');
+      }
+    }
+
+    return processed.join('\n');
+  }
+
+  function parseMarkdown(text) {
+    // If marked is loaded, use it
+    if (typeof marked !== 'undefined') {
+      try {
+        return marked.parse(text);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('Markdown parsing error:', e);
+        return parseMarkdownSimple(text);
+      }
+    }
+    return parseMarkdownSimple(text);
+  }
+
   function addMessage(text, type) {
     const msg = document.createElement('div');
     msg.className = `gig-msg gig-msg-${type}`;
@@ -123,10 +168,14 @@
     scrollToBottom();
 
     let i = 0;
-    const chars = text || '';
+    const fullText = text || '';
+    const chars = fullText;
     const interval = setInterval(() => {
       if (i >= chars.length) {
         clearInterval(interval);
+        // After typing is finished, render markdown properly
+        bubble.innerHTML = parseMarkdown(fullText);
+        scrollToBottom();
         return;
       }
       const ch = chars[i];
