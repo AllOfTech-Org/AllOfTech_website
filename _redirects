@@ -1,0 +1,3 @@
+# Netlify redirects for clean URLs
+/*.html /:splat 301
+/* /:splat.html 200
