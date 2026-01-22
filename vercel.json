@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/(.*)\\.html",
+      "source": "/(.*)\\.html$",
       "destination": "/$1",
       "permanent": true
     },
@@ -13,8 +13,36 @@
   ],
   "rewrites": [
     {
-      "source": "/([^.]+)$",
-      "destination": "/$1.html"
+      "source": "/case-studies",
+      "destination": "/case-studies.html"
+    },
+    {
+      "source": "/business-advice-chatbot",
+      "destination": "/business-advice-chatbot.html"
+    },
+    {
+      "source": "/ai-ml-development",
+      "destination": "/ai-ml-development.html"
+    },
+    {
+      "source": "/web-development",
+      "destination": "/web-development.html"
+    },
+    {
+      "source": "/mobile-app-development",
+      "destination": "/mobile-app-development.html"
+    },
+    {
+      "source": "/tech-agency-comparison",
+      "destination": "/tech-agency-comparison.html"
+    },
+    {
+      "source": "/terms-and-conditions",
+      "destination": "/terms-and-conditions.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/:slug.html"
     }
   ]
 }
