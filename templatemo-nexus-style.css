@@ -1553,7 +1553,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 3rem;
             margin-top: 5rem;
         }
@@ -1598,51 +1598,13 @@ https://templatemo.com/tm-594-nexus-flow
         .pricing-card.featured {
             border-color: var(--primary-cyan);
             background: rgba(0, 255, 255, 0.05);
-            transform: scale(1.05);
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
-        }
-
-        .pricing-card.featured::before {
-            content: 'MOST POPULAR';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
-            color: var(--darker-bg);
-            padding: 0.5rem 2rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border-radius: 999px;
-            z-index: 10;
         }
 
         .pricing-card.customer-favorite {
             border-color: var(--primary-purple);
             background: rgba(124, 58, 237, 0.05);
-            transform: scale(1.05);
             box-shadow: 0 0 50px rgba(124, 58, 237, 0.3);
-        }
-
-        .pricing-card.customer-favorite::before {
-            content: 'CUSTOMER FAVORITE';
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
-            color: var(--darker-bg);
-            padding: 0.4rem 1.5rem;
-            font-size: 0.8rem;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            border-radius: 999px;
-            z-index: 10;
-        }
-
-        .pricing-card.customer-favorite:hover {
-            transform: scale(1.05) translateY(-10px);
         }
 
         .pricing-card:hover {
@@ -1650,8 +1612,51 @@ https://templatemo.com/tm-594-nexus-flow
             box-shadow: 0 20px 50px rgba(0, 255, 255, 0.2);
         }
 
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
+        /* Featured / customer favorite badges */
+        .pricing-card.featured::before,
+        .pricing-card.customer-favorite::before {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
+            color: var(--darker-bg);
+            padding: 0.45rem 1.9rem;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+            border-radius: 999px;
+            z-index: 10;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            top: -12px;
+        }
+
+        .pricing-card.customer-favorite::before {
+            content: 'CUSTOMER FAVORITE';
+            top: -10px;
+        }
+
+        /* Badge responsiveness */
+        @media (max-width: 768px) {
+            .pricing-card.featured::before,
+            .pricing-card.customer-favorite::before {
+                font-size: 0.7rem;
+                padding: 0.35rem 1.5rem;
+                top: -10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pricing-card.featured::before,
+            .pricing-card.customer-favorite::before {
+                font-size: 0.65rem;
+                padding: 0.3rem 1.2rem;
+                top: -8px;
+            }
         }
 
         .plan-name {
@@ -2501,7 +2506,8 @@ https://templatemo.com/tm-594-nexus-flow
             }
             
             .pricing-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
+                width: 100%;
             }
             
             .pricing-card.featured {

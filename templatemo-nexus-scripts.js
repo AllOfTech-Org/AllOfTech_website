@@ -8,6 +8,11 @@ https://templatemo.com/tm-594-nexus-flow
 
 // JavaScript Document
 
+// Motion / performance preferences
+const prefersReducedMotion =
+  window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobileDevice = window.innerWidth <= 768;
+
 // Initialize mobile menu functionality
 function initializeMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -142,7 +147,11 @@ if (document.readyState === 'loading') {
 function generateMatrixRain() {
     const matrixRain = document.getElementById('matrixRain');
     const characters = 'A L L O F T E C H AI ML WEB DEV UX UI N8N DATA CLOUD CODE 0 1 {} <> [] () # @';
-    const columns = Math.floor(window.innerWidth / 20);
+    if (!matrixRain) return;
+
+    // Reduce number of columns to keep animations light
+    const maxColumns = 40;
+    const columns = Math.min(Math.floor(window.innerWidth / 24), maxColumns);
     
     for (let i = 0; i < columns; i++) {
         const column = document.createElement('div');
@@ -166,7 +175,12 @@ function generateMatrixRain() {
 // Generate Floating Particles
 function generateParticles() {
     const particlesContainer = document.getElementById('particlesContainer');
-    const particleCount = 50;
+    if (!particlesContainer) return;
+
+    // Fewer particles on smaller screens for smoother performance
+    let particleCount = 40;
+    if (window.innerWidth < 1200) particleCount = 30;
+    if (isMobileDevice) particleCount = 18;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -182,7 +196,10 @@ function generateParticles() {
 // Generate Data Streams
 function generateDataStreams() {
     const dataStreams = document.getElementById('dataStreams');
-    const streamCount = 10;
+    if (!dataStreams) return;
+
+    // Slightly reduce number of streams
+    const streamCount = 6;
     
     for (let i = 0; i < streamCount; i++) {
         const stream = document.createElement('div');
@@ -196,66 +213,52 @@ function generateDataStreams() {
     }
 }
 
-// Initialize background effects
-generateMatrixRain();
-generateParticles();
-generateDataStreams();
+// Initialize background effects (skip when user prefers reduced motion)
+if (!prefersReducedMotion) {
+    generateMatrixRain();
+    generateParticles();
+    generateDataStreams();
+}
 
-// Regenerate matrix rain on window resize
+// Regenerate matrix rain on window resize (throttled)
 let resizeTimer;
 window.addEventListener('resize', () => {
+    if (prefersReducedMotion) return;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
         const matrixRain = document.getElementById('matrixRain');
+        if (!matrixRain) return;
         matrixRain.innerHTML = '';
         generateMatrixRain();
     }, 250);
 });
 
 // Interactive mouse glow effect (throttled for performance)
-let mouseTimer;
-document.addEventListener('mousemove', (e) => {
-    if (!mouseTimer) {
-        mouseTimer = setTimeout(() => {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            
-            // Move orbs slightly based on mouse position
-            const orbs = document.querySelectorAll('.orb');
-            orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.02;
-                const x = (mouseX - window.innerWidth / 2) * speed;
-                const y = (mouseY - window.innerHeight / 2) * speed;
-                orb.style.transform = `translate(${x}px, ${y}px)`;
-            });
-            
-            // Make nearby particles glow brighter (desktop only)
-            if (window.innerWidth > 768) {
-                const particles = document.querySelectorAll('.particle');
-                particles.forEach(particle => {
-                    const rect = particle.getBoundingClientRect();
-                    const particleX = rect.left + rect.width / 2;
-                    const particleY = rect.top + rect.height / 2;
-                    const distance = Math.sqrt(Math.pow(mouseX - particleX, 2) + Math.pow(mouseY - particleY, 2));
-                    
-                    if (distance < 150) {
-                        const brightness = 1 - (distance / 150);
-                        particle.style.boxShadow = `0 0 ${20 + brightness * 30}px rgba(0, 255, 255, ${0.5 + brightness * 0.5})`;
-                        particle.style.transform = `scale(${1 + brightness * 0.5})`;
-                    } else {
-                        particle.style.boxShadow = '';
-                        particle.style.transform = '';
-                    }
+if (!prefersReducedMotion) {
+    let mouseTimer;
+    document.addEventListener('mousemove', (e) => {
+        if (!mouseTimer) {
+            mouseTimer = setTimeout(() => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // Move orbs slightly based on mouse position
+                const orbs = document.querySelectorAll('.orb');
+                orbs.forEach((orb, index) => {
+                    const speed = (index + 1) * 0.02;
+                    const x = (mouseX - window.innerWidth / 2) * speed;
+                    const y = (mouseY - window.innerHeight / 2) * speed;
+                    orb.style.transform = `translate(${x}px, ${y}px)`;
                 });
-            }
-            
-            mouseTimer = null;
-        }, 16); // ~60fps
-    }
-});
+                
+                mouseTimer = null;
+            }, 16); // ~60fps
+        }
+    });
+}
 
-// Add a glow that follows the cursor (desktop only)
-if (window.innerWidth > 768) {
+// Add a glow that follows the cursor (desktop only, and only if motion allowed)
+if (window.innerWidth > 768 && !prefersReducedMotion) {
     const cursorGlow = document.createElement('div');
     cursorGlow.style.cssText = `
         position: fixed;
@@ -307,17 +310,28 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar scroll effect
-window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 100) {
-        nav.style.background = 'rgba(15, 15, 35, 0.95)';
-        nav.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.2)';
-    } else {
-        nav.style.background = 'rgba(15, 15, 35, 0.9)';
-        nav.style.boxShadow = 'none';
-    }
-});
+// Navbar scroll effect (throttled with requestAnimationFrame)
+const nav = document.querySelector('nav');
+if (nav) {
+    let lastScrollY = window.scrollY;
+    let navScrollScheduled = false;
+
+    window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+        if (navScrollScheduled) return;
+        navScrollScheduled = true;
+        requestAnimationFrame(() => {
+            navScrollScheduled = false;
+            if (lastScrollY > 100) {
+                nav.style.background = 'rgba(15, 15, 35, 0.95)';
+                nav.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.2)';
+            } else {
+                nav.style.background = 'rgba(15, 15, 35, 0.9)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+    });
+}
 
 // Scroll animations
 const observerOptions = {
@@ -400,32 +414,34 @@ document.querySelectorAll('.feature-card').forEach(card => {
     });
 });
 
-// Random cyber text effects
+// Random cyber text effects (desktop only, optional for motion-sensitive users)
 const cyberTexts = ['STARTING UP...', 'TURNING TECHNOLOGY INTO GROWTH', 'BUILD SMART. GROW FAST', 'Application Live'];
 
-setInterval(() => {
-    const randomText = cyberTexts[Math.floor(Math.random() * cyberTexts.length)];
-    const tempElement = document.createElement('div');
-    tempElement.textContent = randomText;
-    tempElement.style.cssText = `
-        position: fixed;
-        top: ${Math.random() * 100}vh;
-        left: ${Math.random() * 100}vw;
-        color: var(--primary-cyan);
-        font-size: 0.8rem;
-        font-weight: 700;
-        z-index: 1000;
-        opacity: 0.7;
-        pointer-events: none;
-        animation: fadeOut 3s ease-out forwards;
-        text-shadow: 0 0 10px var(--primary-cyan);
-    `;
-    document.body.appendChild(tempElement);
-    
-    setTimeout(() => {
-        document.body.removeChild(tempElement);
-    }, 3000);
-}, 5000);
+if (!prefersReducedMotion && window.innerWidth > 1024) {
+    setInterval(() => {
+        const randomText = cyberTexts[Math.floor(Math.random() * cyberTexts.length)];
+        const tempElement = document.createElement('div');
+        tempElement.textContent = randomText;
+        tempElement.style.cssText = `
+            position: fixed;
+            top: ${Math.random() * 100}vh;
+            left: ${Math.random() * 100}vw;
+            color: var(--primary-cyan);
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 1000;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: fadeOut 3s ease-out forwards;
+            text-shadow: 0 0 10px var(--primary-cyan);
+        `;
+        document.body.appendChild(tempElement);
+        
+        setTimeout(() => {
+            document.body.removeChild(tempElement);
+        }, 3000);
+    }, 5000);
+}
 
 // Add fadeOut animation
 const style = document.createElement('style');
