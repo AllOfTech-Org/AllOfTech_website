@@ -68,7 +68,6 @@
     height: 600px;
     max-height: 80vh;
     background: rgba(26, 11, 46, 0.95);
-    backdrop-filter: blur(10px);
     border: 1px solid var(--border-color);
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 255, 0.2);
@@ -77,6 +76,14 @@
     overflow: hidden;
     animation: slideUp 0.3s ease;
     -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: soften heavy visual effects for performance */
+@media (max-width: 768px) {
+    .chatbot-window {
+        backdrop-filter: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    }
 }
 
 .chatbot-window.active {
