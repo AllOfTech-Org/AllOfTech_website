@@ -47,6 +47,13 @@ https://templatemo.com/tm-594-nexus-flow
             position: relative;
         }
 
+        main {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
         h1, h2, h3, h4, h5, h6,
         .logo,
         .nav-links a,
@@ -2715,11 +2722,11 @@ https://templatemo.com/tm-594-nexus-flow
             }
         }
 
-        /* Global mobile animation timing */
+        /* Global mobile animation timing – normal speed (matches desktop feel) */
         @media (max-width: 768px) {
             * {
-                animation-duration: 0.4s !important;
-                transition-duration: 0.4s !important;
+                animation-duration: 0.75s !important;
+                transition-duration: 0.75s !important;
             }
         }
 
