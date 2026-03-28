@@ -343,12 +343,73 @@ https://templatemo.com/tm-594-nexus-flow
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             z-index: 10000;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        nav.nav-scrolled {
+            background: rgba(15, 15, 35, 0.95);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
         }
         
         @media (max-width: 768px) {
             nav {
                 padding: 0.75rem 1rem;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(15, 15, 35, 0.98);
+            }
+
+            nav.nav-scrolled {
+                background: rgba(15, 15, 35, 0.99);
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+            }
+
+            .mobile-menu {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(15, 5, 26, 0.98);
+            }
+
+            /* Static gradient — rotating + blur on full viewport is very costly on mobile GPUs */
+            .cyber-gradient {
+                animation: none;
+                transform: none;
+                filter: none;
+            }
+
+            .orb {
+                display: none;
+            }
+
+            .grid-lines,
+            .grid-glow {
+                animation: none;
+            }
+
+            .scanlines,
+            .noise-overlay {
+                display: none;
+            }
+
+            .matrix-rain,
+            .particles,
+            .data-streams {
+                display: none;
+            }
+
+            .feature-card,
+            .pricing-card,
+            .case-study-card,
+            .contact-form {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
+            .image-lightbox-overlay,
+            .service-modal-overlay,
+            .service-modal {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
             }
         }
 

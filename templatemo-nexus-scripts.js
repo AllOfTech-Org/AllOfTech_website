@@ -11,7 +11,11 @@ https://templatemo.com/tm-594-nexus-flow
 // Motion / performance preferences
 const prefersReducedMotion =
   window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isMobileDevice = window.innerWidth <= 768;
+
+/** Skip heavy canvas-like DOM effects on narrow viewports (phones); CSS also tones down blur animations. */
+function isMobilePerformanceMode() {
+    return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+}
 
 // Initialize mobile menu functionality
 function initializeMobileMenu() {
@@ -177,10 +181,8 @@ function generateParticles() {
     const particlesContainer = document.getElementById('particlesContainer');
     if (!particlesContainer) return;
 
-    // Fewer particles on smaller screens for smoother performance
     let particleCount = 40;
     if (window.innerWidth < 1200) particleCount = 30;
-    if (isMobileDevice) particleCount = 18;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -213,8 +215,8 @@ function generateDataStreams() {
     }
 }
 
-// Initialize background effects (skip when user prefers reduced motion)
-if (!prefersReducedMotion) {
+// Initialize background effects (skip reduced motion + skip on phone-width — matrix/particles/streams hammer the GPU)
+if (!prefersReducedMotion && !isMobilePerformanceMode()) {
     generateMatrixRain();
     generateParticles();
     generateDataStreams();
@@ -222,16 +224,22 @@ if (!prefersReducedMotion) {
 
 // Regenerate matrix rain on window resize (throttled)
 let resizeTimer;
-window.addEventListener('resize', () => {
-    if (prefersReducedMotion) return;
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        const matrixRain = document.getElementById('matrixRain');
-        if (!matrixRain) return;
-        matrixRain.innerHTML = '';
-        generateMatrixRain();
-    }, 250);
-});
+window.addEventListener(
+    'resize',
+    () => {
+        if (prefersReducedMotion) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const matrixRain = document.getElementById('matrixRain');
+            if (!matrixRain) return;
+            matrixRain.innerHTML = '';
+            if (!isMobilePerformanceMode()) {
+                generateMatrixRain();
+            }
+        }, 250);
+    },
+    { passive: true }
+);
 
 // Interactive mouse glow effect (throttled for performance)
 if (!prefersReducedMotion) {
@@ -316,21 +324,20 @@ if (nav) {
     let lastScrollY = window.scrollY;
     let navScrollScheduled = false;
 
-    window.addEventListener('scroll', () => {
-        lastScrollY = window.scrollY;
-        if (navScrollScheduled) return;
-        navScrollScheduled = true;
-        requestAnimationFrame(() => {
-            navScrollScheduled = false;
-            if (lastScrollY > 100) {
-                nav.style.background = 'rgba(15, 15, 35, 0.95)';
-                nav.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.2)';
-            } else {
-                nav.style.background = 'rgba(15, 15, 35, 0.9)';
-                nav.style.boxShadow = 'none';
-            }
-        });
-    });
+    window.addEventListener(
+        'scroll',
+        () => {
+            lastScrollY = window.scrollY;
+            if (navScrollScheduled) return;
+            navScrollScheduled = true;
+            requestAnimationFrame(() => {
+                navScrollScheduled = false;
+                nav.classList.toggle('nav-scrolled', lastScrollY > 100);
+            });
+        },
+        { passive: true }
+    );
+    nav.classList.toggle('nav-scrolled', window.scrollY > 100);
 }
 
 // Scroll animations
