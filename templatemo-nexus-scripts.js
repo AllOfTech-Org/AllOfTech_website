@@ -333,16 +333,11 @@ if (nav) {
     });
 }
 
-// Scroll animations – mobile-friendly: lenient observer + scroll fallback so sections always show
-function isMobileViewport() {
-    return window.innerWidth <= 768;
-}
-
-function getObserverOptions() {
-    return isMobileViewport()
-        ? { threshold: 0, rootMargin: '0px 0px 0px 0px' }
-        : { threshold: 0.1, rootMargin: '0px 0px -100px 0px' };
-}
+// Scroll animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -350,43 +345,11 @@ const observer = new IntersectionObserver((entries) => {
             entry.target.classList.add('visible');
         }
     });
-}, getObserverOptions());
+}, observerOptions);
 
-const fadeUpElements = document.querySelectorAll('.fade-up');
-fadeUpElements.forEach(el => observer.observe(el));
-
-// Fallback: on mobile, reveal .fade-up sections when they enter view (handles DevTools emulation & scroll)
-function revealVisibleFadeUps() {
-    if (!isMobileViewport()) return;
-    const viewportBottom = window.innerHeight - 30;
-    fadeUpElements.forEach(el => {
-        if (el.classList.contains('visible')) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.top < viewportBottom) el.classList.add('visible');
-    });
-}
-
-let scrollThrottle = null;
-function onScroll() {
-    if (scrollThrottle) return;
-    scrollThrottle = requestAnimationFrame(() => {
-        revealVisibleFadeUps();
-        scrollThrottle = null;
-    });
-}
-
-if (fadeUpElements.length) {
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', () => {
-        revealVisibleFadeUps();
-    });
-    // Initial reveal after layout (handles first load in mobile viewport)
-    if (document.readyState === 'complete') {
-        setTimeout(revealVisibleFadeUps, 150);
-    } else {
-        window.addEventListener('load', () => setTimeout(revealVisibleFadeUps, 150));
-    }
-}
+document.querySelectorAll('.fade-up').forEach(el => {
+    observer.observe(el);
+});
 
 // Button effects
 document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {

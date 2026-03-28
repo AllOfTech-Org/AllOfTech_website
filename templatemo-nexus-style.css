@@ -47,13 +47,6 @@ https://templatemo.com/tm-594-nexus-flow
             position: relative;
         }
 
-        main {
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
         h1, h2, h3, h4, h5, h6,
         .logo,
         .nav-links a,
@@ -442,7 +435,7 @@ https://templatemo.com/tm-594-nexus-flow
         .mobile-menu {
             position: fixed;
             top: 78px;
-            right: 0;
+            right: -100%;
             width: 80%;
             max-width: 350px;
             height: calc(100vh - 78px);
@@ -450,8 +443,7 @@ https://templatemo.com/tm-594-nexus-flow
             backdrop-filter: blur(20px);
             border-left: 2px solid var(--border-color);
             z-index: 9999;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             overflow-y: auto;
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
             display: flex;
@@ -459,7 +451,7 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .mobile-menu.active {
-            transform: translateX(0);
+            right: 0;
         }
 
         .mobile-menu-overlay {
@@ -2618,23 +2610,6 @@ https://templatemo.com/tm-594-nexus-flow
             }
         }
 
-        /* GPU optimization layer for animated sections */
-        .animated,
-        [data-animate],
-        .card,
-        .section,
-        .hero,
-        .hero-container,
-        .feature-card,
-        .pricing-card,
-        .stats,
-        .service-modal,
-        .chatbot-window,
-        .fade-up {
-            will-change: transform, opacity;
-            transform: translateZ(0);
-        }
-
         /* Scroll animations */
         .fade-up {
             opacity: 0;
@@ -2719,45 +2694,6 @@ https://templatemo.com/tm-594-nexus-flow
             
             .noise-overlay {
                 display: none;
-            }
-        }
-
-        /* Global mobile animation timing – normal speed (matches desktop feel) */
-        @media (max-width: 768px) {
-            * {
-                animation-duration: 0.75s !important;
-                transition-duration: 0.75s !important;
-            }
-        }
-
-        /* Limit concurrent animations on mobile */
-        @media (max-width: 768px) {
-            .features-grid > .feature-card:nth-child(n+7),
-            .pricing-grid > .pricing-card:nth-child(n+5) {
-                animation: none !important;
-                transition: none !important;
-            }
-        }
-
-        /* Soften heavy visual effects on mobile */
-        @media (max-width: 768px) {
-            nav,
-            .mobile-menu,
-            .feature-card,
-            .pricing-card,
-            .case-study-card,
-            .contact-form,
-            .service-modal,
-            .terms-section {
-                backdrop-filter: none !important;
-            }
-
-            .feature-card,
-            .pricing-card,
-            .case-study-card,
-            .contact-form,
-            .service-modal {
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
             }
         }
 
