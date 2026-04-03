@@ -5,6 +5,8 @@
     const chatbotMessages = document.getElementById('chatbotMessages');
     const chatbotInput = document.getElementById('chatbotInput');
     const chatbotSend = document.getElementById('chatbotSend');
+    const chatbotCallout = document.getElementById('chatbotCallout');
+    const chatbotCalloutClose = document.getElementById('chatbotCalloutClose');
     const chatbotLoginModal = document.getElementById('chatbotLoginModal');
     const chatbotLoginForm = document.getElementById('chatbotLoginForm');
     const chatbotInputContainer = document.getElementById('chatbotInputContainer');
@@ -15,6 +17,25 @@
     // Login state management
     const LOGIN_STORAGE_KEY = 'alloftech_chatbot_logged_in';
     const EMAIL_STORAGE_KEY = 'alloftech_chatbot_email';
+    let calloutDismissTimer = null;
+    function hideCallout() {
+        if (!chatbotCallout) return;
+        chatbotCallout.classList.remove('active');
+        if (calloutDismissTimer) {
+            clearTimeout(calloutDismissTimer);
+            calloutDismissTimer = null;
+        }
+    }
+
+    function showCallout() {
+        if (!chatbotCallout) return;
+        chatbotCallout.classList.add('active');
+        if (calloutDismissTimer) {
+            clearTimeout(calloutDismissTimer);
+        }
+        calloutDismissTimer = setTimeout(hideCallout, 9000);
+    }
+
 
     if (typeof marked !== 'undefined') {
         marked.setOptions({
@@ -233,6 +254,7 @@
 
     function toggleChatbot() {
         chatbotWindow.classList.toggle('active');
+        hideCallout();
         if (chatbotWindow.classList.contains('active')) {
             initializeLoginState();
             if (isLoggedIn()) {
@@ -245,6 +267,9 @@
 
     chatbotButton.addEventListener('click', toggleChatbot);
     chatbotClose.addEventListener('click', toggleChatbot);
+    if (chatbotCalloutClose) {
+        chatbotCalloutClose.addEventListener('click', hideCallout);
+    }
     
     // Handle login form
     if (chatbotLoginForm) {
@@ -500,4 +525,8 @@
     if (chatbotWindow.classList.contains('active')) {
         initializeLoginState();
     }
+
+    window.addEventListener('load', () => {
+        setTimeout(showCallout, 900);
+    });
 })();
