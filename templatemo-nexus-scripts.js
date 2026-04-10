@@ -17,6 +17,83 @@ function isMobilePerformanceMode() {
     return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
 }
 
+// Intro preloader
+function initializeSitePreloader() {
+    const preloader = document.getElementById('sitePreloader');
+    if (!preloader) return;
+    if (prefersReducedMotion) {
+        preloader.remove();
+        return;
+    }
+
+    preloader.setAttribute('aria-hidden', 'false');
+    let finished = false;
+    let exiting = false;
+
+    function cleanup() {
+        if (finished) return;
+        finished = true;
+        if (preloader && preloader.parentNode) {
+            preloader.parentNode.removeChild(preloader);
+        }
+    }
+
+    function exitSequence() {
+        if (finished || exiting) return;
+        exiting = true;
+        preloader.classList.add('site-preloader--flash');
+        setTimeout(() => {
+            preloader.classList.add('site-preloader--exiting');
+        }, 95);
+        setTimeout(cleanup, 1500);
+    }
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            preloader.classList.add('site-preloader--run');
+        });
+    });
+
+    const autoTimer = setTimeout(exitSequence, 7000);
+
+    let canSkip = false;
+    setTimeout(() => {
+        canSkip = true;
+        preloader.classList.add('site-preloader--skip-ready');
+    }, 1800);
+
+    preloader.addEventListener('click', () => {
+        if (!canSkip) return;
+        clearTimeout(autoTimer);
+        exitSequence();
+    });
+
+    document.addEventListener('keydown', function onEsc(e) {
+        if (e.key !== 'Escape') return;
+        document.removeEventListener('keydown', onEsc);
+        clearTimeout(autoTimer);
+        exitSequence();
+    });
+
+    window.addEventListener('load', () => {
+        if (!finished && !exiting) {
+            setTimeout(exitSequence, 2600);
+        }
+    }, { once: true });
+
+    setTimeout(() => {
+        if (!finished && !exiting) {
+            exitSequence();
+        }
+    }, 11500);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSitePreloader);
+} else {
+    initializeSitePreloader();
+}
+
 // Initialize mobile menu functionality
 function initializeMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -371,7 +448,7 @@ document.querySelectorAll('.btn-primary, .btn-secondary').forEach(button => {
 
 // Stats counter animation
 const animateStats = (section) => {
-    const stats = section.querySelectorAll('.stat-number');
+    const stats = section.querySelectorAll('.stat-number, .about-future-stat-number');
     stats.forEach(stat => {
         // Check if already animated
         if (stat.classList.contains('animated')) {
@@ -402,12 +479,18 @@ const statsObserver = new IntersectionObserver((entries) => {
             statsObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
 
 const statsSections = document.querySelectorAll('.stats');
 statsSections.forEach(section => {
     if (section) {
         statsObserver.observe(section);
+        // If section is already in view on load, trigger immediately.
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+            animateStats(section);
+            statsObserver.unobserve(section);
+        }
     }
 });
 
@@ -420,6 +503,43 @@ document.querySelectorAll('.feature-card').forEach(card => {
         }, 300);
     });
 });
+
+// FAQ accordion
+function initializeFaqAccordion() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (!faqItems.length) return;
+
+    faqItems.forEach(item => {
+        const trigger = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        if (!trigger || !answer) return;
+
+        trigger.addEventListener('click', () => {
+            const isOpen = item.classList.contains('is-open');
+
+            // Single-open behavior
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('is-open');
+                const otherBtn = otherItem.querySelector('.faq-question');
+                const otherAnswer = otherItem.querySelector('.faq-answer');
+                if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+                if (otherAnswer) otherAnswer.hidden = true;
+            });
+
+            if (!isOpen) {
+                item.classList.add('is-open');
+                trigger.setAttribute('aria-expanded', 'true');
+                answer.hidden = false;
+            }
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeFaqAccordion);
+} else {
+    initializeFaqAccordion();
+}
 
 // Random cyber text effects (desktop only, optional for motion-sensitive users)
 const cyberTexts = ['STARTING UP...', 'TURNING TECHNOLOGY INTO GROWTH', 'BUILD SMART. GROW FAST', 'Application Live'];
@@ -592,15 +712,33 @@ if (document.readyState === 'loading') {
 }
 
 // Contact form submission with EmailJS
+const EMAILJS_PUBLIC_KEY = 'kgXIjzhce1SbUpve9';
+const CONTACT_EMAILJS_SERVICE_ID = 'service_lkha1el';
+const CONTACT_EMAILJS_TEMPLATE_ID = 'template_hat5kie';
+const REVIEW_EMAILJS_SERVICE_ID = 'service_17hkvzg';
+const REVIEW_EMAILJS_TEMPLATE_ID = 'template_1wgepzk';
+
+function ensureEmailJsReady() {
+    if (typeof emailjs === 'undefined') {
+        return false;
+    }
+
+    if (!window.__emailJsInitialized) {
+        emailjs.init({
+            publicKey: EMAILJS_PUBLIC_KEY
+        });
+        window.__emailJsInitialized = true;
+    }
+
+    return true;
+}
+
 function initializeContactForm() {
     // Wait for EmailJS to be loaded
-    if (typeof emailjs === 'undefined') {
+    if (!ensureEmailJsReady()) {
         console.error('EmailJS is not loaded. Make sure the EmailJS script is included before this script.');
         return;
     }
-
-    // Initialize EmailJS with your User ID
-    emailjs.init('kgXIjzhce1SbUpve9');
 
     // Get the contact form
     const contactForm = document.getElementById('contact-form');
@@ -634,7 +772,7 @@ function initializeContactForm() {
         }
 
         // Send the form using EmailJS
-        emailjs.sendForm('service_lkha1el', 'template_hat5kie', this)
+        emailjs.sendForm(CONTACT_EMAILJS_SERVICE_ID, CONTACT_EMAILJS_TEMPLATE_ID, this)
             .then(() => {
                 alert('Message sent successfully!');
                 this.reset(); // Reset form fields
@@ -658,14 +796,123 @@ function initializeContactForm() {
     });
 }
 
+// Reviews toggle + submission form
+function initializeReviewSection() {
+    const reviewToggleBtn = document.getElementById('reviewToggleBtn');
+    const reviewFormPanel = document.getElementById('reviewFormPanel');
+    const reviewForm = document.getElementById('review-form');
+    const reviewRatingInput = document.getElementById('review_rating');
+    const ratingButtons = document.querySelectorAll('.rating-star-btn');
+    const ratingHelperText = document.getElementById('ratingHelperText');
+
+    if (!reviewToggleBtn || !reviewFormPanel || !reviewForm) return;
+
+    function setStarRating(ratingValue) {
+        const numericRating = Number(ratingValue);
+        if (!reviewRatingInput || Number.isNaN(numericRating)) return;
+
+        reviewRatingInput.value = String(numericRating);
+        ratingButtons.forEach(button => {
+            const buttonRating = Number(button.getAttribute('data-rating'));
+            button.classList.toggle('active', buttonRating <= numericRating);
+        });
+        if (ratingHelperText) {
+            ratingHelperText.textContent = `${numericRating} star${numericRating > 1 ? 's' : ''} selected`;
+        }
+    }
+
+    ratingButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const ratingValue = button.getAttribute('data-rating');
+            setStarRating(ratingValue);
+        });
+    });
+
+    reviewToggleBtn.addEventListener('click', () => {
+        const isOpen = reviewToggleBtn.getAttribute('aria-expanded') === 'true';
+        reviewToggleBtn.setAttribute('aria-expanded', String(!isOpen));
+        reviewFormPanel.hidden = isOpen;
+    });
+
+    reviewForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const reviewName = document.getElementById('review_name')?.value.trim();
+        const reviewOccupation = document.getElementById('review_occupation')?.value.trim() || 'Not provided';
+        const reviewRating = document.getElementById('review_rating')?.value.trim();
+        const reviewMessage = document.getElementById('review_message')?.value.trim();
+
+        if (!reviewName || !reviewRating || !reviewMessage) {
+            alert('Please fill out your name, star rating, and main review.');
+            return;
+        }
+
+        const submitButton = reviewForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton?.textContent || 'Submit Review';
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+        }
+
+        if (!ensureEmailJsReady()) {
+            alert('Email service is not available right now. Please try again later.');
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            }
+            return;
+        }
+
+        const ratingAsStars = '★'.repeat(Number(reviewRating));
+        const templateParams = {
+            review_name: reviewName,
+            review_occupation: reviewOccupation,
+            review_rating: reviewRating,
+            review_rating_stars: ratingAsStars,
+            review_message: reviewMessage,
+            submitted_at: new Date().toLocaleString()
+        };
+
+        emailjs.send(REVIEW_EMAILJS_SERVICE_ID, REVIEW_EMAILJS_TEMPLATE_ID, templateParams)
+            .then(() => {
+                alert('Thank you! Your review has been submitted successfully.');
+                reviewForm.reset();
+                reviewFormPanel.hidden = true;
+                reviewToggleBtn.setAttribute('aria-expanded', 'false');
+                ratingButtons.forEach(button => button.classList.remove('active'));
+                if (ratingHelperText) {
+                    ratingHelperText.textContent = 'Click a star to set rating';
+                }
+            })
+            .catch(error => {
+                console.error('Review EmailJS Error:', error);
+                const errorStatus = error?.status ? `Status: ${error.status}. ` : '';
+                const errorReason = error?.text || error?.message || JSON.stringify(error) || 'Unknown EmailJS error';
+                alert(`Failed to submit review. ${errorStatus}${errorReason}`);
+            })
+            .finally(() => {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                }
+            });
+    });
+}
+
 // Initialize contact form when DOM is ready and EmailJS is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
         // Wait a bit for EmailJS to load if it's loaded asynchronously
-        setTimeout(initializeContactForm, 100);
+        setTimeout(() => {
+            initializeContactForm();
+            initializeReviewSection();
+        }, 100);
     });
 } else {
     // DOM is already ready, but wait for EmailJS
-    setTimeout(initializeContactForm, 100);
+    setTimeout(() => {
+        initializeContactForm();
+        initializeReviewSection();
+    }, 100);
 }
 
