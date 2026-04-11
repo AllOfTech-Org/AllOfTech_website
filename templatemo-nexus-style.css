@@ -898,6 +898,7 @@ https://templatemo.com/tm-594-nexus-flow
             
             .nav-bottom {
                 flex: 0 0 auto;
+                margin-left: clamp(2.5rem, 6vw, 5rem);
             }
             
             .cyber-button {
