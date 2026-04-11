@@ -3080,26 +3080,123 @@ https://templatemo.com/tm-594-nexus-flow
             padding: 0 1rem;
         }
 
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 1.5rem;
+        /* Reviews marquee */
+        .reviews-marquee {
+            --reviews-marquee-gap: 1.25rem;
+            --review-card-basis: 300px;
             margin-top: 2.5rem;
         }
 
-        .review-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 28px rgba(0, 255, 255, 0.07);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+        .reviews-marquee-viewport {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 0.35rem 0;
+            cursor: grab;
+            touch-action: none;
+            outline: none;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 24px 48px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            background: linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.04) 0%,
+                rgba(255, 255, 255, 0.015) 45%,
+                rgba(0, 0, 0, 0.12) 100%
+            );
+            backdrop-filter: blur(14px) saturate(150%);
+            -webkit-backdrop-filter: blur(14px) saturate(150%);
         }
 
-        .review-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 255, 255, 0.45);
+        .reviews-marquee-viewport:focus-visible {
+            box-shadow:
+                0 0 0 2px rgba(0, 255, 255, 0.35),
+                0 24px 48px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .reviews-marquee-viewport.is-dragging {
+            cursor: grabbing;
+        }
+
+        .reviews-marquee-viewport::before,
+        .reviews-marquee-viewport::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: min(56px, 8vw);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .reviews-marquee-viewport::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--darker-bg) 0%, transparent 100%);
+            opacity: 0.85;
+        }
+
+        .reviews-marquee-viewport::after {
+            right: 0;
+            background: linear-gradient(270deg, var(--darker-bg) 0%, transparent 100%);
+            opacity: 0.85;
+        }
+
+        .reviews-marquee-track {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            gap: var(--reviews-marquee-gap);
+            width: max-content;
+            will-change: transform;
+        }
+
+        .reviews-marquee-track.is-dragging .review-card {
+            pointer-events: none;
+        }
+
+        .reviews-marquee-hint {
+            margin: 1rem 0 0;
+            text-align: center;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            opacity: 0.85;
+        }
+
+        .review-card {
+            flex: 0 0 var(--review-card-basis);
+            min-width: 0;
+            max-width: var(--review-card-basis);
+            background: linear-gradient(
+                155deg,
+                rgba(255, 255, 255, 0.09) 0%,
+                rgba(255, 255, 255, 0.03) 42%,
+                rgba(0, 0, 0, 0.08) 100%
+            );
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            padding: 1.45rem 1.5rem;
+            backdrop-filter: blur(22px) saturate(165%);
+            -webkit-backdrop-filter: blur(22px) saturate(165%);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.28),
+                0 0 0 1px rgba(0, 255, 255, 0.05) inset,
+                0 1px 0 rgba(255, 255, 255, 0.12) inset;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .reviews-marquee .review-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 255, 255, 0.28);
+            box-shadow:
+                0 14px 40px rgba(0, 0, 0, 0.32),
+                0 0 28px rgba(0, 255, 255, 0.08),
+                0 0 0 1px rgba(0, 255, 255, 0.08) inset,
+                0 1px 0 rgba(255, 255, 255, 0.14) inset;
         }
 
         .review-header {
@@ -3361,12 +3458,17 @@ https://templatemo.com/tm-594-nexus-flow
                 padding: 0;
             }
 
-            .reviews-grid {
-                gap: 1rem;
+            .reviews-marquee {
+                --reviews-marquee-gap: 1rem;
             }
 
-            .review-card {
-                padding: 1.2rem;
+            .reviews-marquee .review-card {
+                padding: 1.2rem 1.25rem;
+            }
+
+            .reviews-marquee-hint {
+                font-size: 0.78rem;
+                padding: 0 0.5rem;
             }
             
             .footer-links {

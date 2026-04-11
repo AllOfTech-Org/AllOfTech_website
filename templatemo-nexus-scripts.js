@@ -796,6 +796,186 @@ function initializeContactForm() {
     });
 }
 
+// Reviews marquee: auto-scroll loop, pause on drag/touch, responsive card width
+function initializeReviewsMarquee() {
+    const root = document.querySelector('[data-reviews-marquee]');
+    const viewport = document.getElementById('reviews-marquee-viewport');
+    const track = root?.querySelector('.reviews-marquee-track');
+    if (!root || !viewport || !track || viewport.dataset.marqueeReady === '1') return;
+    viewport.dataset.marqueeReady = '1';
+
+    const originals = track.querySelectorAll('.review-card');
+    if (!originals.length) return;
+
+    originals.forEach((card) => {
+        track.appendChild(card.cloneNode(true));
+    });
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const AUTO_PX_PER_SEC = 40;
+    const RESUME_MS = 2200;
+
+    let position = 0;
+    let loopWidth = 0;
+    let cardStep = 0;
+    let autoplayActive = !reducedMotion;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartPos = 0;
+    let resumeTimer = null;
+    let lastTs = 0;
+
+    function visibleCountForWidth(width) {
+        if (width < 640) return 1;
+        if (width < 1024) return 2;
+        return 3;
+    }
+
+    function readGapPx() {
+        const gapCss = getComputedStyle(track).gap;
+        const parsed = parseFloat(gapCss);
+        return Number.isFinite(parsed) ? parsed : 20;
+    }
+
+    function updateMetrics() {
+        const w = viewport.clientWidth;
+        const n = visibleCountForWidth(w);
+        const gap = readGapPx();
+        const basis = Math.max(200, (w - (n - 1) * gap) / n);
+        viewport.style.setProperty('--review-card-basis', `${basis}px`);
+
+        loopWidth = track.scrollWidth / 2;
+        cardStep = basis + gap;
+
+        wrapPosition();
+        applyTransform();
+    }
+
+    function applyTransform() {
+        track.style.transform = `translate3d(${position}px, 0, 0)`;
+    }
+
+    function wrapPosition() {
+        if (!loopWidth) return;
+        while (position <= -loopWidth) position += loopWidth;
+        while (position > 0) position -= loopWidth;
+    }
+
+    function scheduleResumeAutoplay() {
+        if (reducedMotion) {
+            autoplayActive = false;
+            return;
+        }
+        clearTimeout(resumeTimer);
+        autoplayActive = false;
+        resumeTimer = setTimeout(() => {
+            autoplayActive = true;
+            resumeTimer = null;
+        }, RESUME_MS);
+    }
+
+    function finishDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove('is-dragging');
+        track.classList.remove('is-dragging');
+        wrapPosition();
+        applyTransform();
+        scheduleResumeAutoplay();
+    }
+
+    function onPointerDown(e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        isDragging = true;
+        viewport.classList.add('is-dragging');
+        track.classList.add('is-dragging');
+        dragStartX = e.clientX;
+        dragStartPos = position;
+        clearTimeout(resumeTimer);
+        resumeTimer = null;
+        autoplayActive = false;
+        try {
+            viewport.setPointerCapture(e.pointerId);
+        } catch (_) {}
+    }
+
+    function onPointerMove(e) {
+        if (!isDragging) return;
+        position = dragStartPos + (e.clientX - dragStartX);
+        wrapPosition();
+        applyTransform();
+    }
+
+    function onPointerUp(e) {
+        if (!isDragging) return;
+        try {
+            viewport.releasePointerCapture(e.pointerId);
+        } catch (_) {}
+        finishDrag();
+    }
+
+    viewport.addEventListener('pointerdown', onPointerDown);
+    viewport.addEventListener('pointermove', onPointerMove);
+    viewport.addEventListener('pointerup', onPointerUp);
+    viewport.addEventListener('pointercancel', onPointerUp);
+    viewport.addEventListener('lostpointercapture', () => {
+        if (isDragging) finishDrag();
+    });
+
+    viewport.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        e.preventDefault();
+        clearTimeout(resumeTimer);
+        autoplayActive = false;
+        const dir = e.key === 'ArrowLeft' ? -1 : 1;
+        position += dir * cardStep;
+        wrapPosition();
+        applyTransform();
+        scheduleResumeAutoplay();
+    });
+
+    function tick(ts) {
+        requestAnimationFrame(tick);
+        if (!loopWidth) return;
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min(64, ts - lastTs) / 1000;
+        lastTs = ts;
+
+        if (autoplayActive && !isDragging && !reducedMotion) {
+            position -= AUTO_PX_PER_SEC * dt;
+            wrapPosition();
+            applyTransform();
+        }
+    }
+
+    const ro = new ResizeObserver(() => updateMetrics());
+    ro.observe(viewport);
+    updateMetrics();
+    requestAnimationFrame(tick);
+
+    if (document.readyState !== 'complete') {
+        window.addEventListener('load', () => updateMetrics(), { once: true });
+    }
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => updateMetrics());
+    }
+
+    const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function onReducedMotionChange(ev) {
+        if (ev.matches) {
+            autoplayActive = false;
+            clearTimeout(resumeTimer);
+        } else {
+            autoplayActive = true;
+        }
+    }
+    if (typeof motionMq.addEventListener === 'function') {
+        motionMq.addEventListener('change', onReducedMotionChange);
+    } else if (typeof motionMq.addListener === 'function') {
+        motionMq.addListener(onReducedMotionChange);
+    }
+}
+
 // Reviews toggle + submission form
 function initializeReviewSection() {
     const reviewToggleBtn = document.getElementById('reviewToggleBtn');
@@ -905,6 +1085,7 @@ if (document.readyState === 'loading') {
         // Wait a bit for EmailJS to load if it's loaded asynchronously
         setTimeout(() => {
             initializeContactForm();
+            initializeReviewsMarquee();
             initializeReviewSection();
         }, 100);
     });
@@ -912,6 +1093,7 @@ if (document.readyState === 'loading') {
     // DOM is already ready, but wait for EmailJS
     setTimeout(() => {
         initializeContactForm();
+        initializeReviewsMarquee();
         initializeReviewSection();
     }, 100);
 }
