@@ -812,7 +812,7 @@ function initializeReviewsMarquee() {
     });
 
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const AUTO_PX_PER_SEC = 40;
+    const AUTO_PX_PER_SEC = 100;
     const RESUME_MS = 2200;
 
     let position = 0;
@@ -828,7 +828,7 @@ function initializeReviewsMarquee() {
     function visibleCountForWidth(width) {
         if (width < 640) return 1;
         if (width < 1024) return 2;
-        return 3;
+        return 4;
     }
 
     function readGapPx() {
