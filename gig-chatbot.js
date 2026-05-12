@@ -10,6 +10,13 @@
   const inputEl = document.getElementById('gigInput');
   const sendBtn = document.getElementById('gigSendBtn');
 
+  // Abort if this page doesn't include the gig-chatbot markup — otherwise
+  // calling addEventListener on a null reference below would throw and break
+  // any other scripts on the page.
+  if (!form || !messagesEl || !inputEl || !sendBtn) {
+    return;
+  }
+
   // Business Advice API
   const API_URL = 'https://business-chatbot-advice-api.vercel.app/business-advice';
 

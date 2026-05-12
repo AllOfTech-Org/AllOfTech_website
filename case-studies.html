@@ -26,12 +26,12 @@
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#1a0b2e">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://alloftech.site/case-studies.html">
-    
+    <!-- Canonical URL (clean URL — server rewrites /case-studies to .html internally) -->
+    <link rel="canonical" href="https://alloftech.site/case-studies">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alloftech.site/case-studies.html">
+    <meta property="og:url" content="https://alloftech.site/case-studies">
     <meta property="og:title" content="Case Studies - AllOfTech | Success Stories & Project Portfolio">
     <meta property="og:description" content="Explore AllOfTech's portfolio of successful projects across AI/ML, Web Development, Mobile Apps, UX/UI Design, and Graphics & Branding.">
     <meta property="og:image" content="https://alloftech.site/images/og-image.jpg">
@@ -60,7 +60,7 @@
       "@type": "CollectionPage",
       "name": "Case Studies - AllOfTech",
       "description": "Portfolio of successful technology projects and case studies from AllOfTech",
-      "url": "https://alloftech.site/case-studies.html"
+      "url": "https://alloftech.site/case-studies"
     }
     </script>
 </head>
@@ -94,19 +94,19 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="/" class="logo">
                 AllOfTech
             </a>
             <ul class="nav-links">
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#services">Services</a></li>
-                <li><a href="index.html#reviews">Reviews</a></li>
-                <li><a href="index.html#stats">Why Choose Us</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#reviews">Reviews</a></li>
+                <li><a href="/#stats">Why Choose Us</a></li>
                 <li><a href="case-studies" class="active">Case Studies</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="/#contact">Contact</a></li>
             </ul>
             <div class="nav-bottom">
-                <a href="index.html#contact" class="cyber-button">Get Started</a>
+                <a href="/#contact" class="cyber-button">Get Started</a>
             </div>
             <button class="mobile-menu-button" id="mobileMenuBtn" aria-label="Toggle mobile menu" aria-expanded="false">
                 <div class="hamburger">
@@ -122,23 +122,23 @@
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
-            <a href="index.html" class="mobile-menu-logo">
-                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="logo-image" />
+            <a href="/" class="mobile-menu-logo">
+                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="logo-image" width="56" height="56" loading="lazy" decoding="async" />
                 AllOfTech
             </a>
             <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">✕</button>
         </div>
         <div class="mobile-menu-cta">
-            <a href="index.html#contact" class="cyber-button">Get Started</a>
+            <a href="/#contact" class="cyber-button">Get Started</a>
         </div>
         <nav class="mobile-menu-nav">
             <ul>
-                <li><a href="index.html#about">About Us</a></li>
-                <li><a href="index.html#services">Services</a></li>
-                <li><a href="index.html#reviews">Reviews</a></li>
-                <li><a href="index.html#stats">Why Choose Us</a></li>
+                <li><a href="/#about">About Us</a></li>
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#reviews">Reviews</a></li>
+                <li><a href="/#stats">Why Choose Us</a></li>
                 <li><a href="case-studies">Case Studies</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="/#contact">Contact</a></li>
             </ul>
         </nav>
         <div class="mobile-menu-social">
@@ -166,8 +166,8 @@
                 </h1>
                 <p class="hero-subtitle">Real projects, real results, real transformations. Explore how we've helped businesses achieve measurable success through innovative technology solutions.</p>
                 <div class="hero-buttons">
-                    <a href="index.html#contact" class="btn-primary" aria-label="Start Your Project">Start Your Project</a>
-                    <a href="index.html#services" class="btn-secondary" aria-label="View Our Services">Our Services</a>
+                    <a href="/#contact" class="btn-primary" aria-label="Start Your Project">Start Your Project</a>
+                    <a href="/#services" class="btn-secondary" aria-label="View Our Services">Our Services</a>
                 </div>
             </div>
         </section>
@@ -187,7 +187,7 @@
                         <div class="bar-item">
                             <h3>BEFORE</h3>
                             <div class="bar-visual clickable-image" data-image-src="images/case-studie/Before.png" data-image-alt="Before: Limited online presence and no dedicated, story-driven website for Mashover">
-                                <img src="images/case-studie/Before.png" alt="Before: Limited Mashover Presence" class="bar-image-thumb" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
+                                <img src="images/case-studie/Before.png" alt="Before: Limited Mashover Presence" class="bar-image-thumb" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
                                 <p class="bar-image-label">Before: No cohesive website where visitors could explore Mashover products, story, and contact options in one place</p>
                                 <span class="expand-icon">🔍 Click to expand</span>
                             </div>
@@ -203,7 +203,7 @@
                         <div class="bar-item">
                             <h3>AFTER</h3>
                             <div class="bar-visual clickable-image" data-image-src="images/case-studie/cs1-After-big-scroll.png" data-image-alt="New Mashover Website: long, scrollable page showing hero, products, about, and contact sections">
-                                <img src="images/case-studie/After.png" alt="After: Mashover Website – Where Comfort Meets Style" class="bar-image-thumb" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
+                                <img src="images/case-studie/After.png" alt="After: Mashover Website – Where Comfort Meets Style" class="bar-image-thumb" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
                                 <p class="bar-image-label">New Mashover Website: scrollable experience from hero to products, story, and contact</p>
                                 <span class="expand-icon">🔍 Click to expand</span>
                             </div>
@@ -258,7 +258,7 @@
                         <div class="bar-item">
                             <h3>BEFORE</h3>
                             <div class="bar-visual clickable-image" data-image-src="images/case-studie/cs2-before.png" data-image-alt="No Website: Red Ant had no dedicated online store, limiting customer reach and brand visibility">
-                                <img src="images/case-studie/cs2-before.png" alt="Before: No Website for REDANT" class="bar-image-thumb" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
+                                <img src="images/case-studie/cs2-before.png" alt="Before: No Website for REDANT" class="bar-image-thumb" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
                                 <p class="bar-image-label">No Website: Red Ant had no dedicated online store, limiting customer reach and brand visibility</p>
                                 <span class="expand-icon">🔍 Click to expand</span>
                             </div>
@@ -274,7 +274,7 @@
                         <div class="bar-item">
                             <h3>AFTER</h3>
                             <div class="bar-visual clickable-image" data-image-src="images/case-studie/cs2-After-big-scroll.png" data-image-alt="New Website: REDANT premium gadgets e-commerce homepage with hero section, categories, limited-stock alerts, and trust signals">
-                                <img src="images/case-studie/cs2-After.png" alt="After: REDANT E-Commerce Website" class="bar-image-thumb" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
+                                <img src="images/case-studie/cs2-After.png" alt="After: REDANT E-Commerce Website" class="bar-image-thumb" loading="lazy" decoding="async" onerror="this.style.display='none'; this.parentElement.querySelector('.bar-image-label').style.margin='0';">
                                 <p class="bar-image-label">New Website: REDANT premium gadgets e-commerce homepage showcasing products, categories, and performance-focused branding</p>
                                 <span class="expand-icon">🔍 Click to expand</span>
                             </div>
@@ -554,8 +554,8 @@
                 </div>
                 
                 <div class="hero-buttons" style="justify-content: center; margin-top: 2rem;">
-                    <a href="index.html#contact" class="btn-primary" aria-label="Get Started with AllOfTech">Get Started</a>
-                    <a href="index.html#services" class="btn-secondary" aria-label="View Our Services">View Services</a>
+                    <a href="/#contact" class="btn-primary" aria-label="Get Started with AllOfTech">Get Started</a>
+                    <a href="/#services" class="btn-secondary" aria-label="View Our Services">View Services</a>
                 </div>
             </div>
         </section>
@@ -567,13 +567,13 @@
             <div class="footer-links">
                 <a href="mailto:contact.alloftech@gmail.com" target="_blank">📧 contact.alloftech@gmail.com</a>
                 <span class="footer-separator">•</span>
-                <a href="index.html#about">About Us</a>
+                <a href="/#about">About Us</a>
                 <span class="footer-separator">•</span>
-                <a href="index.html#services">Services</a>
+                <a href="/#services">Services</a>
                 <span class="footer-separator">•</span>
                 <a href="case-studies">Case Studies</a>
                 <span class="footer-separator">•</span>
-                <a href="index.html#contact">Contact</a>
+                <a href="/#contact">Contact</a>
                 <span class="footer-separator">•</span>
                 <a href="terms-and-conditions">Terms & Conditions</a>
                 <span class="footer-separator">•</span>
@@ -591,87 +591,97 @@
     </footer>
     
     <!-- Image Lightbox Modal -->
-    <div class="image-lightbox-overlay" id="imageLightboxOverlay">
+    <div class="image-lightbox-overlay" id="imageLightboxOverlay" aria-hidden="true">
         <div class="image-lightbox-container">
             <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">✕</button>
-            <img src="" alt="" class="lightbox-image" id="lightboxImage">
+            <img src="" alt="" class="lightbox-image" id="lightboxImage" decoding="async">
             <div class="lightbox-caption" id="lightboxCaption"></div>
         </div>
     </div>
     
     <!-- Custom Scripts -->
-    <script src="templatemo-nexus-scripts.js"></script>
+    <script src="templatemo-nexus-scripts.js" defer></script>
     <script>
-        // Image Lightbox Functionality
-        function initializeImageLightbox() {
-            const clickableImages = document.querySelectorAll('.clickable-image');
-            const lightboxOverlay = document.getElementById('imageLightboxOverlay');
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxCaption = document.getElementById('lightboxCaption');
-            const lightboxClose = document.getElementById('lightboxClose');
+        // Image Lightbox Functionality. Uses the shared body-scroll lock from
+        // templatemo-nexus-scripts.js when available so nested overlays don't
+        // step on each other's body.style.overflow value.
+        (function () {
+            function initializeImageLightbox() {
+                var lightboxOverlay = document.getElementById('imageLightboxOverlay');
+                var lightboxImage = document.getElementById('lightboxImage');
+                var lightboxCaption = document.getElementById('lightboxCaption');
+                var lightboxClose = document.getElementById('lightboxClose');
 
-            if (!lightboxOverlay || !lightboxImage || !lightboxCaption || !lightboxClose) {
-                return;
-            }
+                if (!lightboxOverlay || !lightboxImage || !lightboxCaption || !lightboxClose) {
+                    return;
+                }
 
-            function openLightbox(imageSrc, imageAlt) {
-                lightboxImage.src = imageSrc;
-                lightboxImage.alt = imageAlt;
-                lightboxCaption.textContent = imageAlt;
-                lightboxOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+                var clickableImages = document.querySelectorAll('.clickable-image');
+                var isOpen = false;
 
-            function closeLightbox() {
-                lightboxOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-
-            // Add click event to all clickable images
-            clickableImages.forEach(imageContainer => {
-                imageContainer.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const imageSrc = this.getAttribute('data-image-src');
-                    const imageAlt = this.getAttribute('data-image-alt');
-                    
-                    if (imageSrc) {
-                        openLightbox(imageSrc, imageAlt);
+                function lockScroll() {
+                    if (window.AllOfTechScroll && typeof window.AllOfTechScroll.lock === 'function') {
+                        window.AllOfTechScroll.lock();
+                    } else {
+                        document.body.style.overflow = 'hidden';
                     }
+                }
+                function unlockScroll() {
+                    if (window.AllOfTechScroll && typeof window.AllOfTechScroll.unlock === 'function') {
+                        window.AllOfTechScroll.unlock();
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                }
+
+                function openLightbox(imageSrc, imageAlt) {
+                    lightboxImage.src = imageSrc;
+                    lightboxImage.alt = imageAlt || '';
+                    lightboxCaption.textContent = imageAlt || '';
+                    lightboxOverlay.classList.add('active');
+                    if (!isOpen) {
+                        isOpen = true;
+                        lockScroll();
+                    }
+                }
+
+                function closeLightbox() {
+                    if (!isOpen) return;
+                    isOpen = false;
+                    lightboxOverlay.classList.remove('active');
+                    unlockScroll();
+                }
+
+                clickableImages.forEach(function (imageContainer) {
+                    imageContainer.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var imageSrc = this.getAttribute('data-image-src');
+                        var imageAlt = this.getAttribute('data-image-alt');
+                        if (imageSrc) openLightbox(imageSrc, imageAlt);
+                    });
+                    imageContainer.style.cursor = 'pointer';
                 });
 
-                // Add hover effect
-                imageContainer.style.cursor = 'pointer';
-            });
+                lightboxImage.addEventListener('error', function () {
+                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%231a0b2e" width="800" height="600"/%3E%3Ctext fill="%2300ffff" font-family="monospace" font-size="20" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3EImage Not Found%3C/text%3E%3C/svg%3E';
+                });
 
-            // Handle image load errors in lightbox
-            lightboxImage.addEventListener('error', function() {
-                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%231a0b2e" width="800" height="600"/%3E%3Ctext fill="%2300ffff" font-family="monospace" font-size="20" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3EImage Not Found%3C/text%3E%3C/svg%3E';
-            });
+                lightboxClose.addEventListener('click', closeLightbox);
+                lightboxOverlay.addEventListener('click', function (e) {
+                    if (e.target === lightboxOverlay) closeLightbox();
+                });
 
-            // Close on close button click
-            lightboxClose.addEventListener('click', closeLightbox);
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && isOpen) closeLightbox();
+                });
+            }
 
-            // Close on overlay click
-            lightboxOverlay.addEventListener('click', function(e) {
-                if (e.target === lightboxOverlay) {
-                    closeLightbox();
-                }
-            });
-
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) {
-                    closeLightbox();
-                }
-            });
-        }
-
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeImageLightbox);
-        } else {
-            initializeImageLightbox();
-        }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeImageLightbox, { once: true });
+            } else {
+                initializeImageLightbox();
+            }
+        })();
     </script>
 </body>
 </html>

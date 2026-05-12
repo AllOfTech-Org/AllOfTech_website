@@ -450,7 +450,7 @@ https://templatemo.com/tm-594-nexus-flow
         <div class="site-preloader__flash" aria-hidden="true"></div>
         <div class="site-preloader__content">
             <div class="site-preloader__logo-ring">
-                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="site-preloader__logo-image">
+                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="site-preloader__logo-image" width="42" height="42" decoding="async" fetchpriority="high">
             </div>
             <p class="site-preloader__brand">
                 <span>A</span><span>L</span><span>L</span><span>O</span><span>F</span><span class="site-preloader__brand-space">&nbsp;</span><span>T</span><span>E</span><span>C</span><span>H</span>
@@ -533,7 +533,7 @@ https://templatemo.com/tm-594-nexus-flow
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-header">
             <a href="#top" class="mobile-menu-logo">
-                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="logo-image" />
+                <img src="images/new-Logo.png" alt="AllOfTech Logo" class="logo-image" width="56" height="56" loading="lazy" decoding="async" />
                 AllOfTech
             </a>
             <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">✕</button>
@@ -1589,7 +1589,7 @@ https://templatemo.com/tm-594-nexus-flow
                 <span class="footer-separator">•</span>
                 <a href="#services" aria-label="Services" title="Services">🛠️Services</a>
                 <span class="footer-separator">•</span>
-                <a href="case-studies.html" aria-label="Case Studies" title="Case Studies">📑Case Studies</a>
+                <a href="case-studies" aria-label="Case Studies" title="Case Studies">📑Case Studies</a>
                 <span class="footer-separator">•</span>
                 <a href="terms-and-conditions">Terms & Conditions</a>
                 <span class="footer-separator">•</span>
@@ -1634,7 +1634,7 @@ https://templatemo.com/tm-594-nexus-flow
             <div class="chatbot-header">
                 <div class="chatbot-header-content">
                     <div class="chatbot-avatar">
-                        <img src="images/new-Logo.png" alt="AllOfTech Logo" class="chatbot-logo">
+                        <img src="images/new-Logo.png" alt="AllOfTech Logo" class="chatbot-logo" width="40" height="40" loading="lazy" decoding="async">
                     </div>
                     <div class="chatbot-header-text">
                         <h3>AllOfTech Assistant</h3>
@@ -1672,7 +1672,7 @@ https://templatemo.com/tm-594-nexus-flow
             <div class="chatbot-messages" id="chatbotMessages" style="display: none;">
                 <div class="chatbot-message chatbot-message-bot">
                     <div class="message-avatar">
-                        <img src="images/new-Logo.png" alt="AllOfTech Logo" class="message-logo">
+                        <img src="images/new-Logo.png" alt="AllOfTech Logo" class="message-logo" width="32" height="32" loading="lazy" decoding="async">
                     </div>
                     <div class="message-content">
                         <p>Hello! I'm the AllOfTech assistant. How can I help you today?</p>
@@ -1690,71 +1690,79 @@ https://templatemo.com/tm-594-nexus-flow
         </div>
     </div>
 
-    <!-- Marked.js for Markdown parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="chatbot.js"></script>
-    
-    <!-- EmailJS Script -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
+    <!-- Marked.js for Markdown parsing (deferred so it doesn't block render) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+    <script src="chatbot.js" defer></script>
+
+    <!-- EmailJS Script (deferred — only needed once the user submits a form) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+
     <!-- Custom Scripts -->
-    <script src="templatemo-nexus-scripts.js"></script>
-    
+    <script src="templatemo-nexus-scripts.js" defer></script>
+
     <!-- User Tracking Script - Google Sheets Integration -->
-    <script src="user-tracking.js"></script>
-    
+    <script src="user-tracking.js" defer></script>
+
     <!-- Auto-fill Contact Form Script -->
     <script>
-        // Handle service selection from case studies buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const serviceButtons = document.querySelectorAll('[data-service]');
-            const messageField = document.getElementById('message');
-            
-            // Store service name when button is clicked
-            serviceButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const serviceName = this.getAttribute('data-service');
-                    sessionStorage.setItem('selectedService', serviceName);
-                });
-            });
-            
-            // Auto-fill message field when contact section is visible
-            function autoFillMessage() {
-                const selectedService = sessionStorage.getItem('selectedService');
-                if (selectedService && messageField && !messageField.value.trim()) {
-                    messageField.value = `I'm interested in learning more about: ${selectedService}\n\n`;
-                    messageField.focus();
-                    // Clear the stored service after using it
-                    sessionStorage.removeItem('selectedService');
-                }
-            }
-            
-            // Check on page load if we're already at contact section
-            if (window.location.hash === '#contact') {
-                setTimeout(autoFillMessage, 300);
-            }
-            
-            // Check when scrolling to contact section
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-                const observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            setTimeout(autoFillMessage, 300);
-                        }
+        // Handle service selection from case studies buttons.
+        // Runs once after DOMContentLoaded; observer is disconnected after the
+        // first successful auto-fill so we don't keep observing forever.
+        (function () {
+            function init() {
+                const serviceButtons = document.querySelectorAll('[data-service]');
+                const messageField = document.getElementById('message');
+
+                serviceButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        var serviceName = this.getAttribute('data-service');
+                        if (serviceName) sessionStorage.setItem('selectedService', serviceName);
                     });
-                }, { threshold: 0.3 });
-                
-                observer.observe(contactSection);
-            }
-            
-            // Also check on hash change (when clicking anchor links)
-            window.addEventListener('hashchange', function() {
-                if (window.location.hash === '#contact') {
-                    setTimeout(autoFillMessage, 500);
+                });
+
+                function autoFillMessage() {
+                    var selectedService = sessionStorage.getItem('selectedService');
+                    if (selectedService && messageField && !messageField.value.trim()) {
+                        messageField.value = "I'm interested in learning more about: " + selectedService + "\n\n";
+                        messageField.focus();
+                        sessionStorage.removeItem('selectedService');
+                        return true;
+                    }
+                    return false;
                 }
-            });
-        });
+
+                if (window.location.hash === '#contact') {
+                    setTimeout(autoFillMessage, 300);
+                }
+
+                var contactSection = document.getElementById('contact');
+                if (contactSection && 'IntersectionObserver' in window) {
+                    var observer = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (entry) {
+                            if (!entry.isIntersecting) return;
+                            setTimeout(function () {
+                                if (autoFillMessage()) {
+                                    observer.disconnect();
+                                }
+                            }, 300);
+                        });
+                    }, { threshold: 0.3 });
+                    observer.observe(contactSection);
+                }
+
+                window.addEventListener('hashchange', function () {
+                    if (window.location.hash === '#contact') {
+                        setTimeout(autoFillMessage, 500);
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init, { once: true });
+            } else {
+                init();
+            }
+        })();
     </script>
 </body>
 

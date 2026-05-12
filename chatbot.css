@@ -928,3 +928,30 @@
     }
 }
 
+/* Respect users that prefer reduced motion: stop continuous animations and
+   keep transitions snappy without removing functionality. */
+@media (prefers-reduced-motion: reduce) {
+    .chatbot-pulse,
+    .chatbot-callout.active,
+    .chatbot-loading span {
+        animation: none !important;
+    }
+
+    .chatbot-window,
+    .chatbot-message {
+        animation: none !important;
+    }
+
+    .chatbot-callout,
+    .chatbot-button,
+    .chatbot-close,
+    .chatbot-send,
+    .chatbot-input,
+    .chatbot-callout-close,
+    .message-content.markdown-body a,
+    .chatbot-form-group input,
+    .chatbot-login-button {
+        transition: none !important;
+    }
+}
+

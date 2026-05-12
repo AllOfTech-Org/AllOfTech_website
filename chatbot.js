@@ -14,6 +14,12 @@
     const API_URL = 'https://alloftech-website-chatbot-api.vercel.app/chat';
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6mx1chaD0UyESeUU-xOYK2RYaduxF5LFy2290Gey7wqIyJLMlAZfxWe32cbLbJUyf/exec';
 
+    // Bail out entirely on pages where the chatbot markup isn't included so
+    // we don't throw and break unrelated scripts (e.g. case-studies page).
+    if (!chatbotButton || !chatbotWindow || !chatbotMessages || !chatbotInput || !chatbotSend) {
+        return;
+    }
+
     // Login state management
     const LOGIN_STORAGE_KEY = 'alloftech_chatbot_logged_in';
     const EMAIL_STORAGE_KEY = 'alloftech_chatbot_email';
@@ -260,18 +266,18 @@
             if (isLoggedIn()) {
                 chatbotInput.focus();
             } else {
-                document.getElementById('chatbotLoginEmail').focus();
+                const emailField = document.getElementById('chatbotLoginEmail');
+                if (emailField) emailField.focus();
             }
         }
     }
 
     chatbotButton.addEventListener('click', toggleChatbot);
-    chatbotClose.addEventListener('click', toggleChatbot);
+    if (chatbotClose) chatbotClose.addEventListener('click', toggleChatbot);
     if (chatbotCalloutClose) {
         chatbotCalloutClose.addEventListener('click', hideCallout);
     }
-    
-    // Handle login form
+
     if (chatbotLoginForm) {
         chatbotLoginForm.addEventListener('submit', handleLogin);
     }
@@ -526,7 +532,23 @@
         initializeLoginState();
     }
 
-    window.addEventListener('load', () => {
+    // Show the callout once after load (or immediately if the page is already
+    // loaded). Use { once: true } so we don't leak the listener.
+    function scheduleInitialCallout() {
         setTimeout(showCallout, 900);
+    }
+    if (document.readyState === 'complete') {
+        scheduleInitialCallout();
+    } else {
+        window.addEventListener('load', scheduleInitialCallout, { once: true });
+    }
+
+    // Clear pending timers when the page is being torn down so we never leak
+    // a callout dismiss across back/forward navigation.
+    window.addEventListener('pagehide', () => {
+        if (calloutDismissTimer) {
+            clearTimeout(calloutDismissTimer);
+            calloutDismissTimer = null;
+        }
     });
 })();

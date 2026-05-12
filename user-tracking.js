@@ -14,8 +14,18 @@
         SESSION_ID_KEY: 'alloftech_session_id',
         COOKIE_EXPIRY_DAYS: 365,
         TRACKING_ENABLED: true,
-        SEND_TO_GOOGLE_SHEETS: true
+        SEND_TO_GOOGLE_SHEETS: true,
+        DEBUG_LOGGING: false,
+        MAX_PAGE_VIEWS: 50,
+        MAX_INTERACTIONS: 100
     };
+
+    function debugLog() {
+        if (!TRACKING_CONFIG.DEBUG_LOGGING) return;
+        try {
+            console.log.apply(console, arguments);
+        } catch (_) {}
+    }
 
     // Generate unique user ID
     function generateUserId() {
@@ -186,9 +196,9 @@
         userData.pageViews = userData.pageViews || [];
         userData.pageViews.push(pageView);
 
-        // Keep only last 50 page views in localStorage
-        if (userData.pageViews.length > 50) {
-            userData.pageViews = userData.pageViews.slice(-50);
+        // Keep only the most recent page views in localStorage
+        if (userData.pageViews.length > TRACKING_CONFIG.MAX_PAGE_VIEWS) {
+            userData.pageViews = userData.pageViews.slice(-TRACKING_CONFIG.MAX_PAGE_VIEWS);
         }
 
         // Save to localStorage
@@ -215,8 +225,7 @@
             }).catch(err => console.error('Error tracking page view:', err));
         }
 
-        // Log tracking info (for debugging - remove in production if desired)
-        console.log('User Tracking:', {
+        debugLog('User Tracking:', {
             userId: userId,
             isReturningUser: isReturningUser,
             visitCount: userData.visitCount,
@@ -244,8 +253,8 @@
         userData.interactions = userData.interactions || [];
         userData.interactions.push(interaction);
 
-        if (userData.interactions.length > 100) {
-            userData.interactions = userData.interactions.slice(-100);
+        if (userData.interactions.length > TRACKING_CONFIG.MAX_INTERACTIONS) {
+            userData.interactions = userData.interactions.slice(-TRACKING_CONFIG.MAX_INTERACTIONS);
         }
 
         saveUserData(userData);
@@ -363,13 +372,17 @@
             });
         }
 
-        // Track section views using Intersection Observer
+        // Track section views using Intersection Observer (once per section
+        // per session to avoid flooding localStorage with duplicate events).
         const sections = document.querySelectorAll('section[id]');
-        if (sections.length > 0) {
+        if (sections.length > 0 && 'IntersectionObserver' in window) {
+            const viewedSections = new Set();
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersecting && !viewedSections.has(entry.target.id)) {
+                        viewedSections.add(entry.target.id);
                         trackInteraction('section_view', entry.target.id);
+                        sectionObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.5 });
@@ -399,8 +412,13 @@
         initializeTracking();
     }
 
-    // Track page visibility changes
+    // Track page visibility changes (throttled so a flurry of focus/blur
+    // events doesn't hammer localStorage on every tab switch).
+    let lastVisibilityChange = 0;
     document.addEventListener('visibilitychange', function() {
+        const now = Date.now();
+        if (now - lastVisibilityChange < 500) return;
+        lastVisibilityChange = now;
         if (document.hidden) {
             trackInteraction('page_hidden', 'visibility');
         } else {
@@ -408,19 +426,26 @@
         }
     });
 
-    // Track when user leaves the page
-    window.addEventListener('beforeunload', function() {
+    // Persist session end information when the user leaves the page. We use
+    // pagehide (more reliable on mobile/back-forward cache) and fall back to
+    // beforeunload for older browsers. Only one of the two will typically fire.
+    let unloadRecorded = false;
+    function recordSessionEnd() {
+        if (unloadRecorded) return;
+        unloadRecorded = true;
         const userData = getUserData();
-        if (userData && userData.sessions) {
+        if (userData && Array.isArray(userData.sessions)) {
             const currentSession = userData.sessions.find(s => s.sessionId === getSessionId());
             if (currentSession) {
                 currentSession.endTime = new Date().toISOString();
-                const duration = new Date(currentSession.endTime) - new Date(currentSession.startTime);
-                currentSession.duration = duration;
+                currentSession.duration =
+                    new Date(currentSession.endTime) - new Date(currentSession.startTime);
                 saveUserData(userData);
             }
         }
-    });
+    }
+    window.addEventListener('pagehide', recordSessionEnd);
+    window.addEventListener('beforeunload', recordSessionEnd);
 
 })();
 
