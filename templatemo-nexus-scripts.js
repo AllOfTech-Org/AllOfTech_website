@@ -94,11 +94,9 @@ https://templatemo.com/tm-594-nexus-flow
         function exitSequence() {
             if (finished || exiting) return;
             exiting = true;
-            preloader.classList.add('site-preloader--flash');
-            setTimeout(() => {
-                preloader.classList.add('site-preloader--exiting');
-            }, 95);
-            setTimeout(cleanup, 1500);
+            document.body.classList.add('is-site-ready');
+            preloader.classList.add('site-preloader--exiting');
+            setTimeout(cleanup, 520);
         }
 
         let canSkip = false;
