@@ -1,6 +1,12 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "alloftech.site" }],
+      "destination": "https://www.alloftech.site/$1",
+      "permanent": true
+    },
+    {
       "source": "/(.*)\\.html$",
       "destination": "/$1",
       "permanent": true
@@ -23,6 +29,10 @@
     {
       "source": "/blog/:slug",
       "destination": "/blog/:slug.html"
+    },
+    {
+      "source": "/services/:slug",
+      "destination": "/services/:slug.html"
     }
   ]
 }
