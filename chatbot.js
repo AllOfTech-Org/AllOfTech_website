@@ -11,7 +11,8 @@
     const chatbotLoginForm = document.getElementById('chatbotLoginForm');
     const chatbotInputContainer = document.getElementById('chatbotInputContainer');
     const chatbotStatus = document.getElementById('chatbotStatus');
-    const API_URL = 'https://alloftech-website-chatbot-api.vercel.app/chat';
+    const API_BASE_URL = 'https://alloftech-alloftech-ai.hf.space';
+    const API_URL = `${API_BASE_URL}/chat`;
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6mx1chaD0UyESeUU-xOYK2RYaduxF5LFy2290Gey7wqIyJLMlAZfxWe32cbLbJUyf/exec';
 
     // Bail out entirely on pages where the chatbot markup isn't included so
@@ -319,10 +320,7 @@
 
             removeLoadingMessage(loadingId);
 
-            const botMessage =
-                data.response ||
-                data.message ||
-                "I apologize, but I couldn't process your request. Please try again.";
+            const botMessage = extractBotMessage(data);
             
             // Calculate response time
             const responseTime = Date.now() - startTime;
@@ -341,6 +339,26 @@
             chatbotSend.disabled = false;
             chatbotInput.focus();
         }
+    }
+
+    function extractBotMessage(data) {
+        if (!data) {
+            return "I apologize, but I couldn't process your request. Please try again.";
+        }
+
+        if (typeof data === 'string') {
+            return data;
+        }
+
+        return (
+            data.response ||
+            data.reply ||
+            data.answer ||
+            data.message ||
+            (data.data && (data.data.response || data.data.reply || data.data.answer || data.data.message)) ||
+            (data.result && (data.result.response || data.result.reply || data.result.answer || data.result.message)) ||
+            "I apologize, but I couldn't process your request. Please try again."
+        );
     }
 
     function parseMarkdown(text) {
