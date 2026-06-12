@@ -24,6 +24,7 @@
     // Login state management
     const LOGIN_STORAGE_KEY = 'alloftech_chatbot_logged_in';
     const EMAIL_STORAGE_KEY = 'alloftech_chatbot_email';
+    const CHAT_SESSION_STORAGE_KEY = 'alloftech_chatbot_session_id';
     let calloutDismissTimer = null;
     function hideCallout() {
         if (!chatbotCallout) return;
@@ -154,6 +155,16 @@
         }
         
         return email;
+    }
+
+    function getStoredChatSessionId() {
+        return localStorage.getItem(CHAT_SESSION_STORAGE_KEY) || '';
+    }
+
+    function storeChatSessionId(sessionId) {
+        if (sessionId) {
+            localStorage.setItem(CHAT_SESSION_STORAGE_KEY, sessionId);
+        }
     }
 
     // Set login state
@@ -304,12 +315,20 @@
         const startTime = Date.now();
 
         try {
+            const requestPayload = {
+                query: message,
+            };
+            const sessionId = getStoredChatSessionId();
+            if (sessionId) {
+                requestPayload.session_id = sessionId;
+            }
+
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: message }),
+                body: JSON.stringify(requestPayload),
             });
 
             if (!response.ok) {
@@ -317,6 +336,7 @@
             }
 
             const data = await response.json();
+            storeChatSessionId(data && data.session_id);
 
             removeLoadingMessage(loadingId);
 
@@ -348,6 +368,10 @@
 
         if (typeof data === 'string') {
             return data;
+        }
+
+        if (data.blocked) {
+            return data.answer || "I can't help with that request. Please ask another question about AllOfTech.";
         }
 
         return (
