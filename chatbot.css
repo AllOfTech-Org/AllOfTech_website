@@ -236,18 +236,20 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px;
-    padding: 0 12px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     border: 1px solid rgba(0, 255, 255, 0.5);
-    border-radius: 999px;
+    border-radius: 50%;
     background: rgba(0, 255, 255, 0.08);
     color: var(--primary-cyan);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
     text-decoration: none;
-    white-space: nowrap;
     transition: all 0.2s ease;
+}
+
+.chatbot-fullscreen-icon {
+    width: 18px;
+    height: 18px;
 }
 
 .chatbot-fullscreen-link:hover {
@@ -367,6 +369,71 @@
     background: rgba(249, 115, 22, 0.2);
     border: 1px solid rgba(249, 115, 22, 0.4);
     color: var(--text-primary);
+}
+
+.chatbot-lead-confirmation-card {
+    max-width: 84%;
+    background: rgba(0, 255, 255, 0.08);
+    border: 1px solid rgba(0, 255, 255, 0.35);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.12);
+}
+
+.chatbot-lead-confirmation-card h4 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.35;
+}
+
+.chatbot-lead-confirmation-card p {
+    color: var(--text-secondary);
+}
+
+.chatbot-lead-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.chatbot-lead-button {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.chatbot-lead-button-primary {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-cyan));
+    border-color: rgba(0, 255, 255, 0.65);
+}
+
+.chatbot-lead-button-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: var(--text-primary);
+}
+
+.chatbot-lead-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.25);
+}
+
+.chatbot-lead-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.chatbot-lead-status {
+    min-height: 18px;
+    margin: 10px 0 0;
+    color: var(--primary-cyan) !important;
+    font-size: 12px !important;
 }
 
 .message-content p {
@@ -718,6 +785,18 @@
         padding: 10px 14px !important;
         font-size: 13px !important;
     }
+
+    .chatbot-lead-confirmation-card {
+        max-width: 88% !important;
+    }
+
+    .chatbot-lead-actions {
+        flex-direction: column;
+    }
+
+    .chatbot-lead-button {
+        width: 100%;
+    }
     
     .message-content.markdown-body {
         font-size: 13px !important;
@@ -983,6 +1062,7 @@
     .chatbot-send,
     .chatbot-input,
     .chatbot-fullscreen-link,
+    .chatbot-lead-button,
     .chatbot-callout-close,
     .message-content.markdown-body a,
     .chatbot-form-group input,

@@ -26,6 +26,7 @@
     const EMAIL_STORAGE_KEY = 'alloftech_chatbot_email';
     const CHAT_SESSION_STORAGE_KEY = 'alloftech_chatbot_session_id';
     let calloutDismissTimer = null;
+    let activeLeadConfirmationCard = null;
     function hideCallout() {
         if (!chatbotCallout) return;
         chatbotCallout.classList.remove('active');
@@ -304,6 +305,8 @@
         const message = chatbotInput.value.trim();
         if (!message) return;
 
+        removeLeadConfirmationCard();
+
         // Track user message
         trackChatbotMessage(message, 'user');
 
@@ -349,6 +352,9 @@
             trackChatbotMessage(botMessage, 'bot', responseTime);
             
             addMessage(botMessage, 'bot');
+            if (shouldShowLeadConfirmation(data)) {
+                addLeadConfirmationCard(data);
+            }
         } catch (error) {
             console.error('Error:', error);
             removeLoadingMessage(loadingId);
@@ -383,6 +389,158 @@
             (data.result && (data.result.response || data.result.reply || data.result.answer || data.result.message)) ||
             "I apologize, but I couldn't process your request. Please try again."
         );
+    }
+
+    function shouldShowLeadConfirmation(data) {
+        return Boolean(data && data.lead && data.lead.confirmation_required);
+    }
+
+    async function sendLeadToAllOfTech({ sessionId, emailjsPayload, apiUrl }) {
+        let payload = emailjsPayload;
+        if (!payload) {
+            const confirmRes = await fetch(`${apiUrl}/lead/${sessionId}/confirm`, {
+                method: 'POST',
+            });
+            if (!confirmRes.ok) {
+                throw new Error('Could not prepare lead email.');
+            }
+            const confirmData = await confirmRes.json();
+            payload = confirmData.emailjs;
+        }
+
+        if (!payload) {
+            throw new Error('EmailJS payload is missing.');
+        }
+
+        if (typeof window.emailjs === 'undefined' || typeof window.emailjs.send !== 'function') {
+            throw new Error('EmailJS is not loaded yet. Please try again.');
+        }
+
+        await window.emailjs.send(
+            payload.service_id,
+            payload.template_id,
+            payload.template_params || {},
+            {
+                publicKey: payload.public_key,
+            }
+        );
+
+        const submittedRes = await fetch(`${apiUrl}/lead/${sessionId}/submitted`, {
+            method: 'POST',
+        });
+        if (!submittedRes.ok) {
+            throw new Error('Email sent, but backend submission status failed.');
+        }
+
+        return submittedRes.json();
+    }
+
+    function removeLeadConfirmationCard() {
+        if (activeLeadConfirmationCard) {
+            activeLeadConfirmationCard.remove();
+            activeLeadConfirmationCard = null;
+        }
+    }
+
+    function createBotAvatar() {
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        const logoImg = document.createElement('img');
+        logoImg.src = 'images/new-Logo.png';
+        logoImg.alt = 'AllOfTech Logo';
+        logoImg.className = 'message-logo';
+        avatar.appendChild(logoImg);
+        return avatar;
+    }
+
+    function addLeadConfirmationCard(data) {
+        removeLeadConfirmationCard();
+
+        const sessionId = data.session_id || getStoredChatSessionId();
+        const cardMessage = document.createElement('div');
+        cardMessage.className = 'chatbot-message chatbot-message-bot chatbot-lead-confirmation-message';
+
+        const content = document.createElement('div');
+        content.className = 'message-content chatbot-lead-confirmation-card';
+
+        const title = document.createElement('h4');
+        title.textContent = 'Send this request to AllOfTech?';
+
+        const description = document.createElement('p');
+        description.textContent = 'Please review the details above. Should we send this request to the AllOfTech team so they can contact you?';
+
+        const actions = document.createElement('div');
+        actions.className = 'chatbot-lead-actions';
+
+        const confirmButton = document.createElement('button');
+        confirmButton.type = 'button';
+        confirmButton.className = 'chatbot-lead-button chatbot-lead-button-primary';
+        confirmButton.textContent = 'Send request to AllOfTech';
+
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.className = 'chatbot-lead-button chatbot-lead-button-secondary';
+        editButton.textContent = 'Edit details';
+
+        const status = document.createElement('p');
+        status.className = 'chatbot-lead-status';
+        status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
+
+        actions.appendChild(confirmButton);
+        actions.appendChild(editButton);
+        content.appendChild(title);
+        content.appendChild(description);
+        content.appendChild(actions);
+        content.appendChild(status);
+        cardMessage.appendChild(createBotAvatar());
+        cardMessage.appendChild(content);
+        chatbotMessages.appendChild(cardMessage);
+
+        activeLeadConfirmationCard = cardMessage;
+        scrollToBottom();
+
+        confirmButton.addEventListener('click', async function () {
+            if (!sessionId) {
+                status.textContent = 'Could not find this chat session. Please send one more message and try again.';
+                return;
+            }
+
+            confirmButton.disabled = true;
+            editButton.disabled = true;
+            status.textContent = 'Sending your request...';
+
+            try {
+                const submittedData = await sendLeadToAllOfTech({
+                    sessionId: sessionId,
+                    emailjsPayload: data.emailjs || null,
+                    apiUrl: API_BASE_URL,
+                });
+                removeLeadConfirmationCard();
+
+                const defaultSuccessMessage = 'Thanks, your request has been sent to the AllOfTech team. We will contact you soon.';
+                const successMessage = (
+                    (typeof submittedData === 'string' && submittedData) ||
+                    (submittedData && (submittedData.answer || submittedData.message || submittedData.response || submittedData.reply)) ||
+                    defaultSuccessMessage
+                );
+                trackChatbotMessage(successMessage, 'bot');
+                addMessage(successMessage, 'bot');
+            } catch (error) {
+                console.error('Lead confirmation error:', error);
+                status.textContent = error.message || 'Could not send your request. Please try again.';
+                confirmButton.disabled = false;
+                editButton.disabled = false;
+            }
+        });
+
+        editButton.addEventListener('click', function () {
+            removeLeadConfirmationCard();
+            const helperMessage = 'Tell me what you want to change before we send it.';
+            trackChatbotMessage(helperMessage, 'bot');
+            addMessage(helperMessage, 'bot');
+            chatbotInput.focus();
+        });
     }
 
     function parseMarkdown(text) {
@@ -482,16 +640,10 @@
         const messageDiv = document.createElement('div');
         messageDiv.className = `chatbot-message chatbot-message-${type}`;
 
-        const avatar = document.createElement('div');
-        avatar.className = 'message-avatar';
-
-        if (type === 'bot') {
-            const logoImg = document.createElement('img');
-            logoImg.src = 'images/new-Logo.png';
-            logoImg.alt = 'AllOfTech Logo';
-            logoImg.className = 'message-logo';
-            avatar.appendChild(logoImg);
-        } else {
+        let avatar = createBotAvatar();
+        if (type !== 'bot') {
+            avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
             avatar.textContent = '👤';
         }
 
@@ -518,13 +670,7 @@
         loadingDiv.className = 'chatbot-message chatbot-message-bot';
         loadingDiv.id = 'loading-message';
 
-        const avatar = document.createElement('div');
-        avatar.className = 'message-avatar';
-        const logoImg = document.createElement('img');
-        logoImg.src = 'images/new-Logo.png';
-        logoImg.alt = 'AllOfTech Logo';
-        logoImg.className = 'message-logo';
-        avatar.appendChild(logoImg);
+        const avatar = createBotAvatar();
 
         const content = document.createElement('div');
         content.className = 'message-content chatbot-loading';
