@@ -28,6 +28,20 @@ https://templatemo.com/tm-594-nexus-flow
             --text-secondary: #a1a1aa;
             --primary-cyan: #00ffff;
             --primary-pink: #ff00ff;
+            --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-heading: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --leading-body: 1.75;
+            --leading-heading: 1.04;
+            --tracking-tight: -0.035em;
+            --tracking-heading: -0.025em;
+            --tracking-label: 0.08em;
+            --measure-readable: 68ch;
+            --measure-narrow: 56ch;
+            --space-section-y: clamp(5.5rem, 8vw, 8rem);
+            --space-section-y-compact: clamp(4.25rem, 6vw, 6.5rem);
+            --space-container-x: clamp(1rem, 4vw, 2.5rem);
+            --space-card: clamp(1.75rem, 3vw, 3rem);
+            --space-grid: clamp(1.5rem, 3vw, 3rem);
         }
 
         html {
@@ -39,16 +53,20 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 0.22vw + 0.95rem, 1.0625rem);
+            font-weight: 400;
             background: var(--darker-bg);
             color: var(--text-primary);
-            line-height: 1.7;
+            line-height: var(--leading-body);
+            letter-spacing: -0.01em;
             overflow-x: hidden;
             width: 100%;
             max-width: 100%;
             position: relative;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         /* Defensive overflow prevention: anything that wraps the entire page
@@ -182,7 +200,27 @@ https://templatemo.com/tm-594-nexus-flow
         .plan-price,
         .btn-primary,
         .btn-secondary {
-            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: var(--font-heading);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: var(--leading-heading);
+            letter-spacing: var(--tracking-heading);
+            text-wrap: balance;
+        }
+
+        p,
+        li {
+            max-width: var(--measure-readable);
+            text-wrap: pretty;
+        }
+
+        a,
+        button,
+        input,
+        textarea {
+            font: inherit;
         }
 
         /* Enhanced Cyberpunk Background */
@@ -863,7 +901,9 @@ https://templatemo.com/tm-594-nexus-flow
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.09em;
+            font-size: 0.95rem;
+            line-height: 1.1;
             transition: all 0.3s ease;
             border-radius: 999px;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
@@ -1109,10 +1149,10 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Hero Section */
         .hero {
-            padding: 150px 2rem 100px;
+            padding: clamp(8rem, 12vw, 11rem) var(--space-container-x) clamp(5rem, 8vw, 7rem);
             text-align: center;
             position: relative;
-            min-height: 100vh;
+            min-height: 94vh;
             display: flex;
             align-items: center;
             width: 100%;
@@ -1123,22 +1163,22 @@ https://templatemo.com/tm-594-nexus-flow
         
         @media (max-width: 768px) {
             .hero {
-                padding: 120px 1.5rem 60px;
+                padding: 118px 1.25rem 72px;
                 min-height: auto;
             }
         }
         
         @media (max-width: 480px) {
             .hero {
-                padding: 100px 1rem 40px;
+                padding: 96px 1rem 56px;
             }
         }
 
         .hero-container {
-            max-width: 1400px;
+            max-width: 1180px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
             box-sizing: border-box;
         }
         
@@ -1155,14 +1195,14 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            margin-bottom: 2rem;
+            font-size: clamp(3.2rem, 8.4vw, 7rem);
+            font-weight: 700;
+            margin-bottom: clamp(1.25rem, 3vw, 2rem);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: clamp(0.01em, 0.35vw, 0.055em);
             position: relative;
             cursor: pointer;
-            line-height: 1.2;
+            line-height: 0.94;
             padding: 0;
             width: 100%;
             box-sizing: border-box;
@@ -1171,7 +1211,7 @@ https://templatemo.com/tm-594-nexus-flow
         
         @media (max-width: 768px) {
             .hero-title {
-                letter-spacing: 2px;
+                letter-spacing: 0.025em;
                 padding: 0;
                 margin-bottom: 1.5rem;
             }
@@ -1179,7 +1219,7 @@ https://templatemo.com/tm-594-nexus-flow
         
         @media (max-width: 480px) {
             .hero-title {
-                letter-spacing: 1px;
+                letter-spacing: 0.015em;
                 margin-bottom: 1rem;
 				white-space: nowrap;
             }
@@ -1339,13 +1379,15 @@ https://templatemo.com/tm-594-nexus-flow
         /* Remove scanner line for cleaner look */
 
         .hero-subtitle {
-            font-size: 1.5rem;
+            font-size: clamp(1.08rem, 1.1vw + 0.9rem, 1.55rem);
             color: var(--text-secondary);
-            margin-bottom: 3rem;
-            max-width: 800px;
+            margin-bottom: clamp(2rem, 4vw, 3.5rem);
+            max-width: 760px;
             margin-left: auto;
             margin-right: auto;
-            font-weight: 300;
+            font-weight: 400;
+            line-height: 1.7;
+            letter-spacing: -0.018em;
             opacity: 0.9;
             background: linear-gradient(135deg, var(--text-secondary), var(--primary-grey));
             -webkit-background-clip: text;
@@ -1378,10 +1420,10 @@ https://templatemo.com/tm-594-nexus-flow
 
         .hero-buttons {
             display: flex;
-            gap: 2rem;
+            gap: clamp(0.9rem, 2vw, 1.5rem);
             justify-content: center;
             flex-wrap: wrap;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -1406,7 +1448,7 @@ https://templatemo.com/tm-594-nexus-flow
         .hero-ticker {
             overflow: hidden;
             white-space: nowrap;
-            min-height: 72px;
+            min-height: clamp(58px, 6vw, 76px);
             display: flex;
             align-items: center;
         }
@@ -1417,10 +1459,10 @@ https://templatemo.com/tm-594-nexus-flow
             gap: 1.15rem;
             padding: 0;
             min-width: max-content;
-            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 1.22rem;
+            font-family: var(--font-heading);
+            font-size: clamp(0.96rem, 0.75vw + 0.78rem, 1.22rem);
             font-weight: 700;
-            letter-spacing: 0.09em;
+            letter-spacing: 0.075em;
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.9);
             text-shadow: none;
@@ -1441,12 +1483,14 @@ https://templatemo.com/tm-594-nexus-flow
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
             color: var(--darker-bg);
-            padding: 1.2rem 3rem;
+            padding: 1.05rem clamp(2rem, 4vw, 3rem);
             border: none;
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.09em;
+            font-size: 0.95rem;
+            line-height: 1.1;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -1463,12 +1507,14 @@ https://templatemo.com/tm-594-nexus-flow
         .btn-secondary {
             background: transparent;
             color: var(--primary-cyan);
-            padding: 1.2rem 3rem;
+            padding: 1.05rem clamp(2rem, 4vw, 3rem);
             border: 2px solid var(--primary-cyan);
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.09em;
+            font-size: 0.95rem;
+            line-height: 1.1;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -1485,7 +1531,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Features Section */
         .features {
-            padding: 120px 2rem;
+            padding: var(--space-section-y) var(--space-container-x);
             position: relative;
         }
         
@@ -1532,7 +1578,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -1543,8 +1589,8 @@ https://templatemo.com/tm-594-nexus-flow
 
         .section-header {
             text-align: center;
-            margin-bottom: 5rem;
-            padding: 0 1rem;
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -1561,47 +1607,51 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .section-title {
-            font-size: 3rem;
-            font-weight: 800;
+            font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+            font-weight: 700;
             color: var(--primary-cyan);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
+            letter-spacing: clamp(-0.025em, 0.2vw, 0.025em);
+            line-height: 1.02;
+            margin: 0 auto 1.35rem;
+            max-width: 1000px;
             position: relative;
             text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
         
         @media (max-width: 768px) {
             .section-title {
-                font-size: 2rem;
+                font-size: clamp(2rem, 6.5vw, 3rem);
             }
         }
         
         @media (max-width: 480px) {
             .section-title {
-                font-size: 1.5rem;
-                letter-spacing: 1px;
+                font-size: clamp(1.85rem, 8vw, 2.5rem);
+                letter-spacing: -0.01em;
             }
         }
 
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -14px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: min(112px, 28vw);
             height: 3px;
             background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
             box-shadow: 0 0 20px var(--primary-cyan);
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 0.5vw + 0.9rem, 1.18rem);
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 1rem;
+            max-width: var(--measure-readable);
+            margin: 1.5rem auto 0;
+            padding: 0;
+            line-height: 1.75;
+            letter-spacing: -0.01em;
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
@@ -1615,15 +1665,15 @@ https://templatemo.com/tm-594-nexus-flow
         
         @media (max-width: 480px) {
             .section-subtitle {
-                font-size: 0.9rem;
-                line-height: 1.5;
+                font-size: 0.95rem;
+                line-height: 1.65;
             }
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
+            gap: var(--space-grid);
         }
         
         @media (max-width: 768px) {
@@ -1642,7 +1692,7 @@ https://templatemo.com/tm-594-nexus-flow
         .feature-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 3rem;
+            padding: var(--space-card);
             position: relative;
             transition: all 0.4s ease;
             backdrop-filter: blur(10px);
@@ -1690,7 +1740,7 @@ https://templatemo.com/tm-594-nexus-flow
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: clamp(1.4rem, 3vw, 2rem);
             font-size: 2rem;
             border-radius: 999px;
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
@@ -1707,29 +1757,31 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: clamp(1.25rem, 0.8vw + 1.05rem, 1.55rem);
             font-weight: 700;
             color: var(--primary-cyan);
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.035em;
+            line-height: 1.12;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            line-height: 1.8;
+            line-height: 1.75;
+            margin: 0;
         }
 
         /* FAQ accordion */
         #faq {
-            padding-top: 115px;
-            padding-bottom: 115px;
+            padding-top: var(--space-section-y);
+            padding-bottom: var(--space-section-y);
         }
 
         #faq .faq-unique-layout {
             display: grid;
             grid-template-columns: 38% 62%;
-            gap: 2.5rem;
+            gap: clamp(2rem, 5vw, 4rem);
             align-items: start;
         }
 
@@ -1741,12 +1793,12 @@ https://templatemo.com/tm-594-nexus-flow
 
         #faq .faq-unique-title {
             margin: 0;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-heading);
             font-size: clamp(2.15rem, 4.6vw, 3.6rem);
-            font-weight: 800;
-            line-height: 1.05;
+            font-weight: 700;
+            line-height: 1.02;
             text-transform: uppercase;
-            letter-spacing: 0.01em;
+            letter-spacing: var(--tracking-heading);
             color: var(--primary-cyan);
             text-shadow: 0 0 18px rgba(0, 255, 255, 0.2);
         }
@@ -1754,17 +1806,17 @@ https://templatemo.com/tm-594-nexus-flow
         #faq .faq-unique-divider {
             width: 84px;
             height: 2px;
-            margin: 1rem 0 1.1rem;
+            margin: 1.15rem 0 1.25rem;
             background: linear-gradient(90deg, var(--primary-cyan), transparent);
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.32);
         }
 
         #faq .faq-unique-subtitle {
             margin: 0;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.8;
+            font-family: var(--font-body);
+            font-size: 1.02rem;
+            font-weight: 400;
+            line-height: 1.75;
             color: #a1a1aa;
             max-width: 34ch;
         }
@@ -1772,7 +1824,7 @@ https://templatemo.com/tm-594-nexus-flow
         .faq-accordion {
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 1rem;
             max-width: none;
         }
 
@@ -1792,13 +1844,14 @@ https://templatemo.com/tm-594-nexus-flow
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 1.25rem;
             text-align: left;
-            padding: 1.1rem 1.25rem;
+            padding: 1.2rem 1.35rem;
             cursor: pointer;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
+            font-family: var(--font-heading);
+            font-size: 1.02rem;
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .faq-question-text {
@@ -1828,7 +1881,7 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .faq-answer {
-            padding: 0 1.25rem 1.1rem;
+            padding: 0 1.35rem 1.25rem;
             color: var(--text-secondary);
             border-top: 1px solid rgba(229, 231, 235, 0.12);
         }
@@ -1836,7 +1889,7 @@ https://templatemo.com/tm-594-nexus-flow
         .faq-answer p,
         .faq-answer ul,
         .faq-answer li {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.98rem;
             line-height: 1.75;
         }
@@ -1852,7 +1905,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Stats Section */
         .stats {
-            padding: 80px 2rem;
+            padding: var(--space-section-y-compact) var(--space-container-x);
             background: rgba(0, 255, 255, 0.02);
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
@@ -1997,7 +2050,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -2009,7 +2062,7 @@ https://templatemo.com/tm-594-nexus-flow
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            gap: var(--space-grid);
             text-align: center;
         }
         
@@ -2025,8 +2078,8 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .stat-number {
-            font-size: 4rem;
-            font-weight: 900;
+            font-size: clamp(2.75rem, 5vw, 4.25rem);
+            font-weight: 700;
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
             -webkit-background-clip: text;
             background-clip: text;
@@ -2049,21 +2102,21 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .stat-label {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: var(--tracking-label);
         }
 
         /* About section: high-end futuristic split layout */
         #about {
-            padding: 120px 2rem;
+            padding: var(--space-section-y) var(--space-container-x);
         }
 
         #about .about-future-layout {
             display: grid;
             grid-template-columns: 45% 55%;
-            gap: 3.5rem;
+            gap: clamp(3rem, 6vw, 5rem);
             align-items: center;
         }
 
@@ -2072,11 +2125,11 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         #about .about-future-heading {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 900;
-            font-size: clamp(3rem, 6vw, 5rem);
-            line-height: 0.95;
-            letter-spacing: 0.02em;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: clamp(3rem, 6vw, 5.4rem);
+            line-height: 0.98;
+            letter-spacing: var(--tracking-heading);
             text-transform: uppercase;
             color: var(--primary-cyan);
             text-align: left;
@@ -2084,34 +2137,34 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         #about .about-future-kicker {
-            margin-top: 1.35rem;
+            margin-top: 1.5rem;
             max-width: 34ch;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.8;
+            font-family: var(--font-body);
+            font-size: 1.02rem;
+            font-weight: 400;
+            line-height: 1.75;
             color: #a1a1aa;
             text-align: left;
         }
 
         #about .about-future-right {
             border-left: 1px solid rgba(229, 231, 235, 0.22);
-            padding-left: 2.6rem;
+            padding-left: clamp(2rem, 4vw, 3.25rem);
             text-align: left;
         }
 
         #about .about-future-description,
         #about .about-future-mission-text {
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            font-size: 1rem;
-            line-height: 1.8;
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 1.02rem;
+            line-height: 1.75;
             color: #a1a1aa;
             text-align: left;
         }
 
         #about .about-future-description {
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
         }
 
         #about .about-future-stats-bar {
@@ -2124,11 +2177,11 @@ https://templatemo.com/tm-594-nexus-flow
             border: 1px solid rgba(229, 231, 235, 0.18);
             border-radius: 14px;
             overflow: hidden;
-            margin: 0 0 2rem;
+            margin: 0 0 2.25rem;
         }
 
         #about .about-future-stat {
-            padding: 1.2rem 1rem 1.1rem;
+            padding: 1.35rem 1.1rem 1.25rem;
             text-align: left;
             border-right: 1px solid rgba(229, 231, 235, 0.14);
         }
@@ -2139,7 +2192,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         #about .about-future-stat-number {
             display: block;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-heading);
             font-weight: 700;
             font-size: clamp(2rem, 4vw, 3rem);
             line-height: 1;
@@ -2150,20 +2203,20 @@ https://templatemo.com/tm-594-nexus-flow
 
         #about .about-future-stat-label {
             display: block;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-weight: 400;
             font-size: 0.72rem;
-            letter-spacing: 0.12em;
+            letter-spacing: var(--tracking-label);
             text-transform: uppercase;
             color: rgba(255, 255, 255, 0.72);
         }
 
         #about .about-future-mission-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-heading);
             font-weight: 700;
             font-size: clamp(2rem, 3.8vw, 3rem);
             line-height: 1.1;
-            letter-spacing: -0.01em;
+            letter-spacing: var(--tracking-heading);
             color: var(--primary-cyan);
             margin-bottom: 0.8rem;
             text-align: left;
@@ -2173,7 +2226,7 @@ https://templatemo.com/tm-594-nexus-flow
         #stats .choose-unique-layout {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2.2rem;
+            gap: clamp(2rem, 4vw, 3rem);
         }
 
         #stats .choose-unique-header {
@@ -2182,11 +2235,11 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         #stats .choose-unique-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.4rem, 5.4vw, 4.4rem);
-            font-weight: 900;
+            font-family: var(--font-heading);
+            font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+            font-weight: 700;
             line-height: 1.02;
-            letter-spacing: 0.015em;
+            letter-spacing: var(--tracking-heading);
             text-transform: uppercase;
             color: var(--primary-cyan);
             text-shadow: 0 0 20px rgba(0, 255, 255, 0.25);
@@ -2196,7 +2249,7 @@ https://templatemo.com/tm-594-nexus-flow
         #stats .choose-unique-divider {
             width: 96px;
             height: 2px;
-            margin: 1.1rem 0 1.25rem;
+            margin: 1.2rem 0 1.35rem;
             background: linear-gradient(90deg, var(--primary-cyan), transparent);
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.35);
         }
@@ -2204,10 +2257,10 @@ https://templatemo.com/tm-594-nexus-flow
         #stats .choose-unique-intro {
             margin: 0;
             max-width: 80ch;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            line-height: 1.9;
+            font-family: var(--font-body);
+            font-size: 1.02rem;
+            font-weight: 400;
+            line-height: 1.78;
             color: #a1a1aa;
             text-align: left;
         }
@@ -2215,14 +2268,14 @@ https://templatemo.com/tm-594-nexus-flow
         #stats .choose-unique-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.2rem;
+            gap: clamp(1rem, 2vw, 1.4rem);
         }
 
         #stats .choose-unique-card {
             background: rgba(0, 0, 0, 0.38);
             border: 1px solid rgba(229, 231, 235, 0.15);
             border-radius: 14px;
-            padding: 1.35rem 1.35rem 1.2rem;
+            padding: clamp(1.25rem, 2.2vw, 1.7rem);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             text-align: left;
@@ -2236,33 +2289,33 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         #stats .choose-unique-number {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             display: block;
             line-height: 1;
         }
 
         #stats .choose-unique-label {
             margin: 0 0 0.5rem;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-heading);
             font-size: 1.03rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: var(--tracking-label);
             color: var(--text-primary);
         }
 
         #stats .choose-unique-copy {
             margin: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.96rem;
-            font-weight: 300;
+            font-weight: 400;
             line-height: 1.75;
             color: #a1a1aa;
         }
 
         /* Pricing Section */
         .pricing {
-            padding: 120px 2rem;
+            padding: var(--space-section-y) var(--space-container-x);
         }
         
         @media (max-width: 768px) {
@@ -2281,7 +2334,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -2293,8 +2346,8 @@ https://templatemo.com/tm-594-nexus-flow
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 3rem;
-            margin-top: 5rem;
+            gap: var(--space-grid);
+            margin-top: clamp(3rem, 6vw, 5rem);
         }
         
         @media (max-width: 768px) {
@@ -2314,7 +2367,7 @@ https://templatemo.com/tm-594-nexus-flow
         .pricing-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 3rem;
+            padding: var(--space-card);
             text-align: center;
             position: relative;
             transition: all 0.4s ease;
@@ -2399,42 +2452,46 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .plan-name {
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 0.9vw + 1rem, 1.5rem);
             font-weight: 700;
             color: var(--primary-cyan);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
+            letter-spacing: 0.065em;
+            line-height: 1.15;
+            margin-bottom: clamp(1.35rem, 3vw, 2rem);
             text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
         }
 
         .plan-price {
-            font-size: 4rem;
-            font-weight: 900;
+            font-size: clamp(2.75rem, 5vw, 4rem);
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
+            line-height: 1;
             text-shadow: 0 0 20px var(--primary-cyan);
         }
 
         .plan-period {
             color: var(--text-secondary);
-            margin-bottom: 3rem;
+            margin-bottom: clamp(2rem, 4vw, 3rem);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: var(--tracking-label);
+            font-size: 0.92rem;
         }
 
         .plan-features {
             list-style: none;
-            margin-bottom: 3rem;
+            margin-bottom: clamp(2rem, 4vw, 3rem);
             text-align: left;
         }
 
         .plan-features li {
-            padding: 1rem 0;
+            padding: 0.85rem 0;
             color: var(--text-secondary);
             position: relative;
             padding-left: 2rem;
             border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            line-height: 1.6;
         }
 
         .plan-features li::before {
@@ -2512,7 +2569,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Professional Case Study Styles */
         .case-study-hero {
-            padding: 80px 2rem 60px;
+            padding: var(--space-section-y-compact) var(--space-container-x) clamp(3.5rem, 6vw, 5rem);
             text-align: center;
             max-width: 1200px;
             margin: 0 auto;
@@ -2527,15 +2584,15 @@ https://templatemo.com/tm-594-nexus-flow
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: var(--tracking-label);
             margin-bottom: 2rem;
         }
 
         .case-study-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 3rem;
-            margin-bottom: 4rem;
+            padding: var(--space-card);
+            margin-bottom: clamp(2.5rem, 5vw, 4rem);
             position: relative;
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -2549,16 +2606,17 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .case-study-header {
-            margin-bottom: 3rem;
+            margin-bottom: clamp(2rem, 4vw, 3rem);
         }
 
         .case-study-title {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 3.4vw, 2.7rem);
             font-weight: 700;
             color: var(--primary-cyan);
             margin-bottom: 1rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: var(--tracking-heading);
+            line-height: 1.08;
         }
 
         .case-study-client {
@@ -2906,7 +2964,7 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .roi-value {
-            font-size: 3rem;
+            font-size: clamp(2.25rem, 4vw, 3rem);
             font-weight: 700;
             color: var(--primary-cyan);
             margin: 1rem 0;
@@ -2920,7 +2978,7 @@ https://templatemo.com/tm-594-nexus-flow
             font-size: 1rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: var(--tracking-label);
             position: relative;
             z-index: 1;
         }
@@ -3833,7 +3891,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Contact Section */
         .contact {
-            padding: 120px 2rem;
+            padding: var(--space-section-y) var(--space-container-x);
             background: rgba(0, 255, 255, 0.02);
             border-top: 1px solid var(--border-color);
         }
@@ -3842,7 +3900,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -3854,9 +3912,9 @@ https://templatemo.com/tm-594-nexus-flow
         .contact-form-wrapper {
             max-width: 980px;
             margin: 0 auto;
-            margin-top: 4rem;
+            margin-top: clamp(2.5rem, 5vw, 4rem);
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
         
         @media (max-width: 768px) {
@@ -3869,7 +3927,7 @@ https://templatemo.com/tm-594-nexus-flow
         .contact-form {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 2.2rem;
+            padding: clamp(1.5rem, 3vw, 2.4rem);
             backdrop-filter: blur(10px);
             border-radius: 18px;
             box-shadow: 0 0 36px rgba(0, 255, 255, 0.08);
@@ -3878,11 +3936,11 @@ https://templatemo.com/tm-594-nexus-flow
         .contact-form .form-row {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.15rem;
         }
 
         .form-group label {
@@ -3890,21 +3948,22 @@ https://templatemo.com/tm-594-nexus-flow
             color: var(--primary-cyan);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-            margin-bottom: 0.8rem;
+            letter-spacing: var(--tracking-label);
+            font-size: 0.82rem;
+            margin-bottom: 0.7rem;
             text-shadow: 0 0 10px var(--primary-cyan);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 0.88rem 1rem;
+            padding: 0.95rem 1rem;
             background: rgba(11, 11, 18, 0.9);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            line-height: 1.45;
             transition: all 0.3s ease;
             border-radius: 10px;
         }
@@ -3947,7 +4006,7 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Reviews Section */
         .reviews {
-            padding: 110px 2rem;
+            padding: var(--space-section-y) var(--space-container-x);
             position: relative;
         }
 
@@ -3967,7 +4026,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
-            padding: 0 1rem;
+            padding: 0;
         }
 
         .reviews-head-extra {
@@ -3976,7 +4035,7 @@ https://templatemo.com/tm-594-nexus-flow
             align-items: center;
             justify-content: center;
             gap: 1rem 1.5rem;
-            margin-top: 1.25rem;
+            margin-top: 1.5rem;
         }
 
         .reviews-trust-badge {
@@ -4008,7 +4067,7 @@ https://templatemo.com/tm-594-nexus-flow
         .reviews-marquee {
             --reviews-marquee-gap: 1.35rem;
             --review-card-basis: 340px;
-            margin-top: 2.75rem;
+            margin-top: clamp(2rem, 4vw, 3rem);
         }
 
         .reviews-marquee-viewport {
@@ -4016,7 +4075,7 @@ https://templatemo.com/tm-594-nexus-flow
             width: 100%;
             overflow: hidden;
             border-radius: 20px;
-            padding: 1.15rem 0.85rem;
+            padding: clamp(0.9rem, 2vw, 1.2rem);
             cursor: grab;
             touch-action: none;
             outline: none;
@@ -4063,7 +4122,7 @@ https://templatemo.com/tm-594-nexus-flow
             max-width: var(--review-card-basis);
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 0.95rem;
             background: linear-gradient(
                 165deg,
                 rgba(30, 18, 52, 0.92) 0%,
@@ -4071,7 +4130,7 @@ https://templatemo.com/tm-594-nexus-flow
             );
             border: 1px solid rgba(0, 255, 255, 0.2);
             border-radius: 18px;
-            padding: 1.35rem 1.4rem 1.5rem;
+            padding: clamp(1.25rem, 2.2vw, 1.65rem);
             box-shadow:
                 0 10px 28px rgba(0, 0, 0, 0.32),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -4127,15 +4186,16 @@ https://templatemo.com/tm-594-nexus-flow
         .reviewer-name {
             margin: 0 0 0.3rem;
             color: var(--text-primary);
-            font-size: 1.1rem;
+            font-size: 1.08rem;
             font-weight: 700;
-            letter-spacing: 0.02em;
+            letter-spacing: -0.01em;
         }
 
         .reviewer-meta {
             margin: 0;
             color: var(--text-secondary);
             font-size: 0.9rem;
+            line-height: 1.45;
         }
 
         .review-stars {
@@ -4150,7 +4210,7 @@ https://templatemo.com/tm-594-nexus-flow
             margin: 0;
             color: rgba(229, 231, 235, 0.88);
             line-height: 1.72;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
         }
 
         .reviews-marquee-hint {
@@ -4222,11 +4282,11 @@ https://templatemo.com/tm-594-nexus-flow
 
         /* Footer */
         .footer {
-            padding: 60px 2rem 40px;
+            padding: clamp(3rem, 5vw, 4rem) var(--space-container-x) 2.5rem;
             border-top: 1px solid var(--border-color);
             text-align: center;
             background: rgba(0, 0, 0, 0.5);
-            margin-top: 80px;
+            margin-top: clamp(3rem, 6vw, 5rem);
         }
 
         .footer-content {
@@ -4240,7 +4300,7 @@ https://templatemo.com/tm-594-nexus-flow
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.65rem 0.85rem;
         }
 
         .footer-links a {
@@ -4248,11 +4308,11 @@ https://templatemo.com/tm-594-nexus-flow
             text-decoration: none;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+            letter-spacing: 0.055em;
+            font-size: 0.86rem;
             transition: all 0.3s ease;
             position: relative;
-            padding: 0 0.5rem;
+            padding: 0.25rem 0.35rem;
         }
 
         .footer-links a:hover {
@@ -4332,8 +4392,10 @@ https://templatemo.com/tm-594-nexus-flow
             }
             
             .hero-title {
-                font-size: clamp(1.8rem, 8vw, 2.5rem);
-                padding: 0 1rem;
+                font-size: clamp(2.6rem, 10vw, 4rem);
+                line-height: 0.96;
+                letter-spacing: 0.025em;
+                padding: 0;
             }
             
             .hero-buttons {
@@ -4457,8 +4519,9 @@ https://templatemo.com/tm-594-nexus-flow
             }
             
             .hero-title {
-				font-size: clamp(1.5rem, 10vw, 2rem);
-				padding: 0 0.5rem;
+				font-size: clamp(2.15rem, 12vw, 3rem);
+				letter-spacing: 0.015em;
+				padding: 0;
 				white-space: nowrap;
             }
             
@@ -4780,20 +4843,20 @@ https://templatemo.com/tm-594-nexus-flow
         .modal-content {
             position: relative;
             z-index: 10;
-            padding: 3rem;
+            padding: clamp(2rem, 4vw, 3rem);
         }
 
         .modal-header {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
+            gap: clamp(1.25rem, 3vw, 2rem);
+            margin-bottom: clamp(2rem, 4vw, 3rem);
+            padding-bottom: clamp(1.25rem, 3vw, 2rem);
             border-bottom: 2px solid var(--border-color);
         }
 
         .modal-icon {
-            font-size: 5rem;
+            font-size: clamp(3rem, 6vw, 5rem);
             filter: drop-shadow(0 0 20px var(--primary-cyan));
         }
 
@@ -4808,41 +4871,44 @@ https://templatemo.com/tm-594-nexus-flow
         }
 
         .modal-header h2 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 4vw, 3rem);
             color: var(--primary-cyan);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: var(--tracking-heading);
+            line-height: 1.04;
             text-shadow: 0 0 20px var(--primary-cyan);
         }
 
         .modal-body {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 3rem;
+            gap: clamp(2rem, 4vw, 3rem);
         }
 
         .modal-main-content h3 {
-            font-size: 1.8rem;
+            font-size: clamp(1.35rem, 2.2vw, 1.8rem);
             color: var(--text-primary);
             margin-bottom: 1rem;
             text-transform: uppercase;
+            line-height: 1.15;
+            letter-spacing: var(--tracking-heading);
         }
 
         .modal-main-content > p {
             color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.8;
+            font-size: clamp(1rem, 0.6vw + 0.9rem, 1.1rem);
+            line-height: 1.75;
             margin-bottom: 2rem;
         }
 
         .modal-features-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: clamp(1rem, 2vw, 1.5rem);
         }
 
         .modal-feature-item {
-            padding: 1.5rem;
+            padding: clamp(1.1rem, 2vw, 1.5rem);
             background: rgba(0, 255, 255, 0.05);
             border: 1px solid var(--border-color);
             border-left: 3px solid var(--primary-cyan);
@@ -4859,12 +4925,13 @@ https://templatemo.com/tm-594-nexus-flow
             color: var(--primary-cyan);
             display: block;
             margin-bottom: 0.5rem;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            line-height: 1.35;
         }
 
         .modal-feature-item {
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .modal-related-services {
@@ -4879,7 +4946,7 @@ https://templatemo.com/tm-594-nexus-flow
             color: var(--primary-cyan);
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: var(--tracking-label);
         }
 
         .related-services-grid {
@@ -4918,7 +4985,7 @@ https://templatemo.com/tm-594-nexus-flow
             font-size: 1rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: var(--tracking-label);
         }
 
         @media (max-width: 1024px) {
